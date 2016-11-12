@@ -1,12 +1,12 @@
-Alýþveriþ sepeti sistemi
+# Alýþveriþ sepeti sistemi
 
 Alýþveriþ sepeti sistemi Bu sýnýf kullanýcýlar siteyi ziyaret ederken ürünlerin eklenebileceði, 
 "session"da saklanan bir alýþveriþ sepeti oluþturmamýz için bize yardým eder.
 Basit esnek ve kolay uygulabilir geliþmiþ bir sýnýfdýr.
 Alýþveriþ sepetindeki ürünlerin silinmesi, miktarýnýn deðiþtirlmesi veya yeni ürün eklenmesi gibi iþlemlere olanak saðlar.
 
-Sepet fonsiyonunu tanýtmak
-
+##Sepet fonsiyonunu tanýtmak
+```php
 
         // eðer use olarak kullanýlacaksa
         // use \Lib\Cart;
@@ -14,7 +14,7 @@ Sepet fonsiyonunu tanýtmak
         $cart_name = 'stnc'; // sepetin session deðerine bir deðer atadýk
         
         $cart = new \Lib\Cart('stnc', PUBLIC_PATH);
-
+```
 ADDTOCART fonksiyonu (Sepete ürün ekleme)
 
 Sepete ürün ekleme için kullanýlýr ayný id'li üründen tekrar eklenirse kontrol eder ve sadece ürünün fiyatýný ve adetini günceller
