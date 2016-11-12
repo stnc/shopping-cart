@@ -1,0 +1,263 @@
+	<script>
+Prism.highlightAll();
+	</script>
+
+	<div class="container">
+	<div class="row">
+		<div class="page-header">
+			<h3>Alışveriş sepeti sistemi    </h3>
+			<hr class="notop">
+		</div>
+		
+
+
+<p>
+Alışveriş sepeti sistemi 
+
+Bu sınıf kullanıcılar siteyi ziyaret ederken ürünlerin eklenebileceği, <br>
+"session"da saklanan bir alışveriş sepeti oluşturmamız için bize yardım eder.<br>
+Basit esnek ve kolay uygulabilir gelişmiş bir sınıfdır.<br>
+Alışveriş sepetindeki ürünlerin silinmesi, miktarının değiştirlmesi veya yeni ürün eklenmesi gibi işlemlere olanak sağlar.<br>
+</p>
+
+<br/>
+
+<div class="alert alert-danger">
+
+</div>
+
+<div class="page-header">
+	<h3>  Sepet fonsiyonunu tanıtmak   </h3>
+	<hr class="notop">
+</div> 
+
+<pre><code class="language-php">
+        // eğer use olarak kullanılacaksa
+        // use \Lib\Cart;
+        // $sepet = new cart($cart_name, PUBLIC_PATH);
+        $cart_name = 'stnc'; // sepetin session değerine bir değer atadık
+        
+        $cart = new \Lib\Cart('stnc', PUBLIC_PATH);
+
+</code></pre>
+
+
+<div class="page-header">
+	<h3>  ADDTOCART fonksiyonu   (Sepete ürün ekleme)</h3>
+	<hr class="notop">
+</div> 
+
+<p>
+Sepete ürün ekleme için kullanılır aynı id'li üründen tekrar eklenirse 
+kontrol eder ve sadece ürünün fiyatını ve adetini günceller
+</p>
+
+http://cms.dev/sepet?action=ekle
+<pre><code class="language-php">
+   $cart = new \Lib\Cart('stnc', PUBLIC_PATH);
+            $data = array(
+                'UrunID' => 02,
+                'UrunAdi' => "çikolata  ",
+                'Resim' => "biskuvi.jpg",
+                'ResimURL' => "biskuvi.jpg",
+                'URL' => "biskuvi.jpg",
+                'Fiyat' => 40.99,
+                "ToplamAdet" => 1,
+                "ToplamFiyat" => ""
+            );
+            // sepete eklenenen her ürün için benzersiz bir id verilmesi gerekir
+            // 34 burada bunu temsil ediyor
+            // bu mesela şu olabilir urunler tablosundaki urun_id yada sku değeri olabilir
+            // bunlar tekil değerlerdir
+            $cart->addToCart("100", $data);
+            
+            $data = array(
+                'UrunID' => 05,
+                'UrunAdi' => "kraker  ",
+                'Resim' => "biskuvi.jpg",
+                'ResimURL' => "biskuvi.jpg",
+                'URL' => "biskuvi.jpg",
+                'Fiyat' => 5,
+                "ToplamAdet" => 1,
+                "ToplamFiyat" => ""
+            );
+            $cart->addToCart("125", $data);
+
+</code></pre>
+
+
+<div class="page-header">
+	<h3>    removeCart fonksiyonu (Sepetden ürün silmek )   </h3>
+	<hr class="notop">
+</div> 
+
+<p>
+Sepetden ürün silmek 
+</p>
+http://cms.dev/sepet?action=sil
+<pre>
+<code class="language-php">
+   $cart = new \Lib\Cart('stnc', PUBLIC_PATH);
+                       $data = array(
+                'UrunID' => 02,
+                'UrunAdi' => "çikolata  ",
+                'Resim' => "biskuvi.jpg",
+                'ResimURL' => "biskuvi.jpg",
+                'URL' => "biskuvi.jpg",
+                'Fiyat' => 40.99,
+                "ToplamAdet" => 1,
+                "ToplamFiyat" => ""
+            );
+
+            $cart->addToCart("100", $data);
+            $cart->viewCart();
+     		$cart->removeCart(100);
+            $cart->viewCart();
+</code>
+</pre>	
+
+
+<div class="page-header">
+	<h3>    viewCart fonksiyonu   </h3>
+	<hr class="notop">
+</div> 
+
+<p>
+Sepeti array olarak verir 
+</p>
+http://cms.dev/sepet?action=ekle
+<pre><code class="language-php">
+   $cart = new \Lib\Cart('stnc', PUBLIC_PATH);
+            $data = array(
+                'UrunID' => 02,
+                'UrunAdi' => "çikolata  ",
+                'Resim' => "biskuvi.jpg",
+                'ResimURL' => "biskuvi.jpg",
+                'URL' => "biskuvi.jpg",
+                'Fiyat' => 40.99,
+                "ToplamAdet" => 1,
+                "ToplamFiyat" => ""
+            );
+       $cart->addToCart("125", $data);
+            
+           //sepet blgisini ver
+           $cart-> viewCart();
+
+</code></pre>
+
+
+
+<div class="page-header">
+	<h3>    GetJson fonksiyonu   </h3>
+	<hr class="notop">
+</div> 
+
+<p>
+Sepeti json olarak geri dondürür ama json değerlerinde otomatik olarak ürünler tablo içinde oluşturulmuş olarak 
+dönerler 
+</p>
+http://cms.dev/sepet?action=ekle
+<pre><code class="language-php">
+   $cart = new \Lib\Cart('stnc', PUBLIC_PATH);
+            $data = array(
+                'UrunID' => 02,
+                'UrunAdi' => "çikolata  ",
+                'Resim' => "biskuvi.jpg",
+                'ResimURL' => "biskuvi.jpg",
+                'URL' => "biskuvi.jpg",
+                'Fiyat' => 40.99,
+                "ToplamAdet" => 1,
+                "ToplamFiyat" => ""
+            );
+       	$cart->addToCart("125", $data);
+        $cart->viewCart();
+        echo $cart->getJSON();
+</code></pre>
+	
+<div class="page-header">
+	<h3>    emptyCart fonksiyonu   </h3>
+	<hr class="notop">
+</div> 
+
+<p>
+sepeti boşaltmak için kullanılır 
+</p>
+http://cms.dev/sepet?action=bosalt
+<pre><code class="language-php">
+   $cart = new \Lib\Cart('stnc', PUBLIC_PATH);
+   $cart->emptyCart();
+  $cart->viewCart();
+</code></pre>
+
+<div class="page-header">
+	<h3>    viewCartTablePrice fonksiyonu   </h3>
+	<hr class="notop">
+</div> 
+
+
+<p>
+ sepetteki ler hakkında ürün adet ve tutar olarak bilgi verir, mini sepet dosyası içindir 
+</p>
+http://cms.dev/sepet?action=mini_sepet_fiyat
+<pre><code class="language-php">
+   $cart = new \Lib\Cart('stnc', PUBLIC_PATH);
+   $cart->viewCartTablePrice();
+
+//sonuc 
+/*
+Toplam Ürün:	2 Ürün
+Toplam Adet:	4 Adet
+Toplam Tutar:	91,98 TL
+*/
+</code></pre>
+
+
+
+<div class="page-header">
+	<h3>    viewCartTableFull fonksiyonu   </h3>
+	<hr class="notop">
+</div> 
+
+<p>
+ sepetteki ler hakkında ürün adet ve tutar olarak full liste bilgi verir.sepetim sayfası bunu kullanır
+</p>
+http://cms.dev/sepet?action=table
+<pre><code class="language-php">
+   $cart = new \Lib\Cart('stnc', PUBLIC_PATH);
+   
+     /*  sepet sayfası na basılıcak yerdir
+      * sepetteki ler hakkında table olarak ayrıntılı bilgi verir
+      */
+  
+ echo $cart->viewCartTableFull();
+
+</code></pre>	
+
+
+
+<div class="page-header">
+	<h3>    cartCount fonksiyonu   </h3>
+	<hr class="notop">
+</div> 
+
+<p>
+      sepetteki ürün toplamı hakkında bilgi verir
+     sepette kaç Adet ürün ve kaç ürün var
+</p>
+http://cms.dev/sepet?action=sepet_tutari
+<pre><code class="language-php">
+$cart = new \Lib\Cart('stnc', PUBLIC_PATH);
+print_r( $cart->cartCount());
+//çıktısı             
+/*
+Array
+(
+    [toplam_urun] => 2
+    [toplam_adet] => 4
+)
+*/
+</code></pre>	
+
+	
+</div>
+</div>

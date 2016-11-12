@@ -1,0 +1,22 @@
+{
+    "name": "cart ",
+    "description": "A super simple function that returns the full SQL query from your PDO statements",
+    "keywords": ["cart", "shp","session"],
+    "homepage": "https://github.com/stnc/pdo-database",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "SELMAN TUNÇ",
+            "role": "Developer",
+             "email": "selmantunc@yandex.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+
+    "autoload": {
+        "psr-4": {
+       "stnc\\cart\\" : "src/stnc/cart/"
+        }
+    }
+}
