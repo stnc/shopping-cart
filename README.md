@@ -1,11 +1,11 @@
 # Alýþveriþ sepeti sistemi
 
-Alýþveriþ sepeti sistemi Bu sýnýf kullanýcýlar siteyi ziyaret ederken ürünlerin eklenebileceði, 
-"session"da saklanan bir alýþveriþ sepeti oluþturmamýz için bize yardým eder.
-Basit esnek ve kolay uygulabilir geliþmiþ bir sýnýfdýr.
+Alýþveriþ sepeti sistemi Bu sýnýf kullanýcýlar siteyi ziyaret ederken ürünlerin eklenebileceði, <br>
+"session"da saklanan bir alýþveriþ sepeti oluþturmamýz için bize yardým eder.<br>
+Basit esnek ve kolay uygulabilir geliþmiþ bir sýnýfdýr.<br>
 Alýþveriþ sepetindeki ürünlerin silinmesi, miktarýnýn deðiþtirlmesi veya yeni ürün eklenmesi gibi iþlemlere olanak saðlar.
 
-##Sepet fonsiyonunu tanýtmak
+## Sepet fonsiyonunu tanýtmak
 ```php
 
         // eðer use olarak kullanýlacaksa
@@ -15,12 +15,12 @@ Alýþveriþ sepetindeki ürünlerin silinmesi, miktarýnýn deðiþtirlmesi veya yeni ür
         
         $cart = new \Lib\Cart('stnc', PUBLIC_PATH);
 ```
-ADDTOCART fonksiyonu (Sepete ürün ekleme)
+## ADDTOCART fonksiyonu (Sepete ürün ekleme)
 
 Sepete ürün ekleme için kullanýlýr ayný id'li üründen tekrar eklenirse kontrol eder ve sadece ürünün fiyatýný ve adetini günceller
 
 http://cms.dev/sepet?action=ekle
-
+```php
    $cart = new \Lib\Cart('stnc', PUBLIC_PATH);
             $data = array(
                 'UrunID' => 02,
@@ -49,13 +49,13 @@ http://cms.dev/sepet?action=ekle
                 "ToplamFiyat" => ""
             );
             $cart->addToCart("125", $data);
+```
+## removeCart fonksiyonu (Sepetden ürün silmek )
 
-removeCart fonksiyonu (Sepetden ürün silmek )
-
-Sepetden ürün silmek
+Sepetden ürün silmek içindir 
 
 http://cms.dev/sepet?action=sil
-
+```php
    $cart = new \Lib\Cart('stnc', PUBLIC_PATH);
                        $data = array(
                 'UrunID' => 02,
@@ -72,13 +72,13 @@ http://cms.dev/sepet?action=sil
             $cart->viewCart();
      		$cart->removeCart(100);
             $cart->viewCart();
-
-viewCart fonksiyonu
+```
+## viewCart fonksiyonu
 
 Sepeti array olarak verir
 
 http://cms.dev/sepet?action=ekle
-
+```php
    $cart = new \Lib\Cart('stnc', PUBLIC_PATH);
             $data = array(
                 'UrunID' => 02,
@@ -94,13 +94,13 @@ http://cms.dev/sepet?action=ekle
             
            //sepet blgisini ver
            $cart-> viewCart();
-
-GetJson fonksiyonu
+```
+## GetJson fonksiyonu
 
 Sepeti json olarak geri dondürür ama json deðerlerinde otomatik olarak ürünler tablo içinde oluþturulmuþ olarak dönerler
 
 http://cms.dev/sepet?action=ekle
-
+```php
    $cart = new \Lib\Cart('stnc', PUBLIC_PATH);
             $data = array(
                 'UrunID' => 02,
@@ -115,21 +115,23 @@ http://cms.dev/sepet?action=ekle
        	$cart->addToCart("125", $data);
         $cart->viewCart();
         echo $cart->getJSON();
-emptyCart fonksiyonu
+```		
+## emptyCart fonksiyonu
 
 sepeti boþaltmak için kullanýlýr
 
 http://cms.dev/sepet?action=bosalt
-
+```php
    $cart = new \Lib\Cart('stnc', PUBLIC_PATH);
    $cart->emptyCart();
   $cart->viewCart();
-viewCartTablePrice fonksiyonu
+```
+## viewCartTablePrice fonksiyonu
 
 sepetteki ler hakkýnda ürün adet ve tutar olarak bilgi verir, mini sepet dosyasý içindir
 
 http://cms.dev/sepet?action=mini_sepet_fiyat
-
+```php
    $cart = new \Lib\Cart('stnc', PUBLIC_PATH);
    $cart->viewCartTablePrice();
 
@@ -139,12 +141,13 @@ Toplam Ürün:	2 Ürün
 Toplam Adet:	4 Adet
 Toplam Tutar:	91,98 TL
 */
-viewCartTableFull fonksiyonu
+```
+##viewCartTableFull fonksiyonu
 
 sepetteki ler hakkýnda ürün adet ve tutar olarak full liste bilgi verir.sepetim sayfasý bunu kullanýr
 
 http://cms.dev/sepet?action=table
-
+```php
    $cart = new \Lib\Cart('stnc', PUBLIC_PATH);
    
      /*  sepet sayfasý na basýlýcak yerdir
@@ -152,13 +155,13 @@ http://cms.dev/sepet?action=table
       */
   
  echo $cart->viewCartTableFull();
-
-cartCount fonksiyonu
+```
+## cartCount fonksiyonu
 
 sepetteki ürün toplamý hakkýnda bilgi verir sepette kaç Adet ürün ve kaç ürün var
 
 http://cms.dev/sepet?action=sepet_tutari
-
+```php
 $cart = new \Lib\Cart('stnc', PUBLIC_PATH);
 print_r( $cart->cartCount());
 //çýktýsý             
@@ -169,3 +172,4 @@ Array
     [toplam_adet] => 4
 )
 */
+```
