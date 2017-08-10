@@ -16,7 +16,7 @@ namespace stnc\cart;
  * Redistributions of files must retain the above copyright notice.
  *
  * @author Selman TUNÇ <selmantunc@gmail.com>
- * @copyright Copyright (c) 2015 SAVEAS YAZILIM
+ * @copyright Copyright (c) 2015 
  * @link http://github.com/stnc
  * @license http://www.opensource.org/licenses/mit-license.php The MIT License
  */
