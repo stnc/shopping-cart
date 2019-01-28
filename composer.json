@@ -1,10 +1,9 @@
 {
     "name": "stnc/php-shopping-cart",
-    "description": "A super simple function that returns the full SQL query from your PDO statements",
-    "keywords": ["cart", "php","session"],
+    "description": "A super simple function php shopping cart",
+    "keywords": ["cart"],
     "homepage": "https://github.com/stnc/php-shopping-cart",
     "license": "MIT",
-    "minimum-stability": "dev",
     "authors": [
         {
             "name": "SELMAN TUNÇ",
