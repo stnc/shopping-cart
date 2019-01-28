@@ -4,7 +4,7 @@
     "keywords": ["cart", "shp","session"],
     "homepage": "https://github.com/stnc/PHP-Shopping-Cart-Class",
     "license": "MIT",
-
+    "minimum-stability": "stable",
     "authors": [
         {
             "name": "SELMAN TUNÇ",
