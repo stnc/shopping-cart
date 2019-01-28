@@ -4,7 +4,7 @@
     "keywords": ["cart", "php","session"],
     "homepage": "https://github.com/stnc/php-shopping-cart",
     "license": "MIT",
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "authors": [
         {
             "name": "SELMAN TUNÇ",
