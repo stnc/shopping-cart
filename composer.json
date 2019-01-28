@@ -2,7 +2,7 @@
     "name": "stnc/php-shopping-cart",
     "description": "A super simple function that returns the full SQL query from your PDO statements",
     "keywords": ["cart", "php","session"],
-    "homepage": "https://github.com/stnc/PHP-Shopping-Cart-Class",
+    "homepage": "https://github.com/stnc/php-shopping-cart",
     "license": "MIT",
     "minimum-stability": "stable",
     "authors": [
