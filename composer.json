@@ -4,6 +4,7 @@
     "keywords": ["cart", "shp","session"],
     "homepage": "https://github.com/stnc/PHP-Shopping-Cart-Class",
     "license": "MIT",
+
     "authors": [
         {
             "name": "SELMAN TUNÇ",
@@ -11,13 +12,14 @@
              "email": "selmantunc@yandex.com"
         }
     ],
-    "minimum-stability": "dev",
+ 
     "require": {
         "php": ">=5.4.0",
+         "ext-pdo": "*"
     },
     "autoload": {
         "psr-4": {
-       "stnc\\cart\\" : "src"
+		"stnc\\cart\\" : "src"
         }
     }
 }
