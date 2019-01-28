@@ -1,8 +1,8 @@
 {
-    "name": "cart ",
+    "name": "stnc/cart",
     "description": "A super simple function that returns the full SQL query from your PDO statements",
     "keywords": ["cart", "shp","session"],
-    "homepage": "https://github.com/stnc/pdo-database",
+    "homepage": "https://github.com/stnc/PHP-Shopping-Cart-Class",
     "license": "MIT",
     "authors": [
         {
@@ -12,11 +12,12 @@
         }
     ],
     "minimum-stability": "dev",
-    "require": {},
-
+    "require": {
+        "php": ">=5.4.0",
+    },
     "autoload": {
         "psr-4": {
-       "stnc\\cart\\" : "src/stnc/cart/"
+       "stnc\\cart\\" : "src"
         }
     }
 }
