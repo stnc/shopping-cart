@@ -1,10 +1,14 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 require_once 'vendor/autoload.php';
 /*use \DB\MYSQL as dbs;
 $db = new dbs\Mysql();*/
   define('SESSION_PREFIX', 'selman');
 define('BISLEM_RESIM_BULUNAMADİ','')
 session_start();
+
 use \stnc\cart\Cart;
 $cart_name = 'stnc'; // sepetin session değerine bir değer atadık
 $cart = new cart($cart_name, 's');
