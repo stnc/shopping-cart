@@ -1,6 +1,6 @@
 {
     "name": "stnc/php-shopping-cart",
-    "description": "Provides an interface for getting the nth number/determining if a number is from the Fibonacci sequence",
+    "description": "php shopping cart class",
         "require": {
         "php": ">=5.4.0",
          "ext-pdo": "*"
