@@ -1,5 +1,5 @@
 {
-    "name": "stnc/php-shopping-cart",
+    "name": "stnc/shopping-cart",
     "description": "php shopping cart class",
         "require": {
         "php": ">=5.4.0"
