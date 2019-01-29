@@ -7,10 +7,11 @@ require_once 'vendor/autoload.php';
 /*use \DB\MYSQL as dbs;
 $db = new dbs\Mysql();*/
   define('SESSION_PREFIX', 'selman');
-define('BISLEM_RESIM_BULUNAMADİ','')
+define('BISLEM_RESIM_BULUNAMADİ','');
 session_start();
 
-use \stnc\cart\Cart;
+
+use \stnc\shoppingCart\Cart;
 $cart_name = 'stnc'; // sepetin session değerine bir değer atadık
 $cart = new cart($cart_name, 's');
 
@@ -24,10 +25,10 @@ $data = array(
 		'Resim' => "biskuvi.jpg",
 		'ResimURL' => "biskuvi.jpg",
 		'URL' => "biskuvi.jpg",
-		'Fiyat' => 40.99,
-		"ToplamAdet" => 1,
+		'price' => 40.99,
+		"totalEach" => 1,
 		'StokBirimi'=>'adet',
-		"ToplamFiyat" => ""
+		"totalPrice" => ""
 );
 $cart->addToCart("100", $data);
 
@@ -37,10 +38,10 @@ $data = array(
 		'Resim' => "biskuvi.jpg",
 		'ResimURL' => "biskuvi.jpg",
 		'URL' => "biskuvi.jpg",
-		'Fiyat' => 40.99,
-		"ToplamAdet" => 1,
-		'StokBirimi'=>'ADET',
-		"ToplamFiyat" => 0
+    'price' => 40.99,
+    "totalEach" => 1,
+    'StokBirimi'=>'adet',
+    "totalPrice" => ""
 );
 $cart->addToCart("110", $data);
 // sepete eklenenen her ürün için benzersiz bir id verilmesi gerekir
@@ -55,10 +56,10 @@ $data = array(
 		'Resim' => "biskuvi.jpg",
 		'ResimURL' => "biskuvi.jpg",
 		'URL' => "biskuvi.jpg",
-		'Fiyat' => 5,
-		"ToplamAdet" => 1,
-		'StokBirimi'=>'Kilogram',
-		"ToplamFiyat" => 0
+    'price' => 40.99,
+    "totalEach" => 1,
+    'StokBirimi'=>'adet',
+    "totalPrice" => ""
 );
 $cart->addToCart("125", $data);
 echo '<pre>';
@@ -84,7 +85,7 @@ Sepeti json olarak geri dondürür ama json değerlerinde otomatik olarak ürün
 
 http://cms.dev/sepet?action=ekle*/
 
-echo $cart->getJSON();
+//echo $cart->getJSON();
 
 
 /*viewCartTablePrice fonksiyonu
