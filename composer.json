@@ -6,7 +6,7 @@
     },
     "autoload": {
         "psr-4": {
-            "stnc\\cart\\": "src"
+            "stnc\\shopping-cart\\": "src"
         }
     },
    "minimum-stability": "dev"
