@@ -21,7 +21,7 @@ Sepete ürün ekleme için kullanılır aynı id'li üründen tekrar eklenirse k
 
 http://cms.dev/sepet?action=ekle
 ```php
-   $cart = new \Lib\Cart('stnc', PUBLIC_PATH);
+   $cart = new \stnc\shoppingCart\Cart('stnc', PUBLIC_PATH);
             $data = array(
                 'UrunID' => 02,
                 'UrunAdi' => "çikolata  ",
