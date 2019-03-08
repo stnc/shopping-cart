@@ -1,175 +1,139 @@
-# Alışveriş sepeti sistemi
+<?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
 
-Alışveriş sepeti sistemi Bu sınıf kullanıcılar siteyi ziyaret ederken ürünlerin eklenebileceği, <br>
-"session"da saklanan bir alışveriş sepeti oluşturmamız için bize yardım eder.<br>
-Basit esnek ve kolay uygulabilir gelişmiş bir sınıfdır.<br>
-Alışveriş sepetindeki ürünlerin silinmesi, miktarının değiştirlmesi veya yeni ürün eklenmesi gibi işlemlere olanak sağlar.
+error_reporting(E_ALL);
+require_once 'vendor/autoload.php';
+/*use \DB\MYSQL as dbs;
+$db = new dbs\Mysql();*/
+  define('SESSION_PREFIX', 'selman');
+define('BISLEM_RESIM_BULUNAMADİ','');
+session_start();
 
-## Sepet fonsiyonunu tanıtmak
-```php
 
-        // eğer use olarak kullanılacaksa
-        // use use \stnc\shoppingCart\Cart;
-        // $sepet = new cart($cart_name, PUBLIC_PATH);
-        $cart_name = 'stnc'; // sepetin session değerine bir değer atadık
-        
-        $cart = new \stnc\shoppingCart\Cart('stnc', PUBLIC_PATH);
-```
-## ADDTOCART fonksiyonu (Sepete ürün ekleme)
+use \stnc\shoppingCart\Cart;
+$cart_name = 'stnc'; // sepetin session değerine bir değer atadık
+$cart = new Cart($cart_name, 'images');
 
-Sepete ürün ekleme için kullanılır aynı id'li üründen tekrar eklenirse kontrol eder ve sadece ürünün fiyatını ve adetini günceller
+/* other call
+$cart_other = new  \stnc\cart\Cart('stnc', 'ds');
+print_r($cart_other);
+*/
+$data = array(
+		'UrunID' => 02,
+		'UrunAdi' => "çikolata  ",
+		'Resim' => "biskuvi.jpg",
+		'ResimURL' => "biskuvi.jpg",
+		'URL' => "biskuvi.jpg",
+		'price' => 40.99,
+		"totalEach" => 1,
+		'StokBirimi'=>'adet',
+		"totalPrice" => ""
+);
+$cart->addToCart("100", $data);
 
-http://cms.dev/sepet?action=ekle
-```php
-   $cart = new \stnc\shoppingCart\Cart('stnc', PUBLIC_PATH);
-            $data = array(
-                'UrunID' => 02,
-                'UrunAdi' => "çikolata  ",
-                'Resim' => "biskuvi.jpg",
-                'ResimURL' => "biskuvi.jpg",
-                'URL' => "biskuvi.jpg",
-                'Fiyat' => 40.99,
-                "ToplamAdet" => 1,
-                "ToplamFiyat" => ""
-            );
-            // sepete eklenenen her ürün için benzersiz bir id verilmesi gerekir
-            // 34 burada bunu temsil ediyor
-            // bu mesela şu olabilir urunler tablosundaki urun_id yada sku değeri olabilir
-            // bunlar tekil değerlerdir
-            $cart->addToCart("100", $data);
-            
-            $data = array(
-                'UrunID' => 05,
-                'UrunAdi' => "kraker  ",
-                'Resim' => "biskuvi.jpg",
-                'ResimURL' => "biskuvi.jpg",
-                'URL' => "biskuvi.jpg",
-                'Fiyat' => 5,
-                "ToplamAdet" => 1,
-                "ToplamFiyat" => ""
-            );
-            $cart->addToCart("125", $data);
-```
-## removeCart fonksiyonu (Sepetden ürün silmek )
+$data = array(
+		'UrunID' => 02,
+		'UrunAdi' => "çikolata  ",
+		'Resim' => "biskuvi.jpg",
+		'ResimURL' => "biskuvi.jpg",
+		'URL' => "biskuvi.jpg",
+    'price' => 40.99,
+    "totalEach" => 1,
+    'StokBirimi'=>'adet',
+    "totalPrice" => ""
+);
+$cart->addToCart("110", $data);
+// sepete eklenenen her ürün için benzersiz bir id verilmesi gerekir
+// 100 burada bunu temsil ediyor
+// bu mesela şu olabilir urunler tablosundaki urun_id yada sku değeri olabilir
+// bunlar tekil değerlerdir
 
-Sepetden ürün silmek içindir 
+
+$data = array(
+		'UrunID' => 05,
+		'UrunAdi' => "kraker  ",
+		'Resim' => "biskuvi.jpg",
+		'ResimURL' => "biskuvi.jpg",
+		'URL' => "biskuvi.jpg",
+    'price' => 40.99,
+    "totalEach" => 1,
+    'StokBirimi'=>'adet',
+    "totalPrice" => ""
+);
+$cart->addToCart("125", $data);
+echo '<pre>';
+
+/*ürün silme
+Sepetden ürün silmek
 
 http://cms.dev/sepet?action=sil
-```php
-   $cart = new \stnc\shoppingCart\Cart('stnc', PUBLIC_PATH);
-                       $data = array(
-                'UrunID' => 02,
-                'UrunAdi' => "çikolata  ",
-                'Resim' => "biskuvi.jpg",
-                'ResimURL' => "biskuvi.jpg",
-                'URL' => "biskuvi.jpg",
-                'Fiyat' => 40.99,
-                "ToplamAdet" => 1,
-                "ToplamFiyat" => ""
-            );
+*/
 
-            $cart->addToCart("100", $data);
-            $cart->viewCart();
-     		$cart->removeCart(100);
-            $cart->viewCart();
-```
-## viewCart fonksiyonu
+$cart->removeCart(100);
+/*viewCart fonksiyonu
 
 Sepeti array olarak verir
 
-http://cms.dev/sepet?action=ekle
-```php
-   $cart = new \stnc\shoppingCart\Cart ('stnc', PUBLIC_PATH);
-            $data = array(
-                'UrunID' => 02,
-                'UrunAdi' => "çikolata  ",
-                'Resim' => "biskuvi.jpg",
-                'ResimURL' => "biskuvi.jpg",
-                'URL' => "biskuvi.jpg",
-                'Fiyat' => 40.99,
-                "ToplamAdet" => 1,
-                "ToplamFiyat" => ""
-            );
-       $cart->addToCart("125", $data);
-            
-           //sepet blgisini ver
-           $cart-> viewCart();
-```
-## GetJson fonksiyonu
+http://cms.dev/sepet?action=ekle*/
+print_r( $cart->viewCart());
+
+
+/*GetJson fonksiyonu
 
 Sepeti json olarak geri dondürür ama json değerlerinde otomatik olarak ürünler tablo içinde oluşturulmuş olarak dönerler
 
-http://cms.dev/sepet?action=ekle
-```php
-   $cart = new \stnc\shoppingCart\Cart('stnc', PUBLIC_PATH);
-            $data = array(
-                'UrunID' => 02,
-                'UrunAdi' => "çikolata  ",
-                'Resim' => "biskuvi.jpg",
-                'ResimURL' => "biskuvi.jpg",
-                'URL' => "biskuvi.jpg",
-                'Fiyat' => 40.99,
-                "ToplamAdet" => 1,
-                "ToplamFiyat" => ""
-            );
-       	$cart->addToCart("125", $data);
-        $cart->viewCart();
-        echo $cart->getJSON();
-```		
-## emptyCart fonksiyonu
+http://cms.dev/sepet?action=ekle*/
 
-sepeti boşaltmak için kullanılır
+//echo $cart->getJSON();
 
-http://cms.dev/sepet?action=bosalt
-```php
-   $cart = new \stnc\shoppingCart\Cart('stnc', PUBLIC_PATH);
-   $cart->emptyCart();
-  $cart->viewCart();
-```
-## viewCartTablePrice fonksiyonu
+
+/*viewCartTablePrice fonksiyonu
 
 sepetteki ler hakkında ürün adet ve tutar olarak bilgi verir, mini sepet dosyası içindir
 
 http://cms.dev/sepet?action=mini_sepet_fiyat
-```php
-   $cart = new \stnc\shoppingCart\Cart('stnc', PUBLIC_PATH);
-   $cart->viewCartTablePrice();
 
-//sonuc 
+//sonuc
 /*
 Toplam Ürün:	2 Ürün
 Toplam Adet:	4 Adet
 Toplam Tutar:	91,98 TL
 */
-```
-##viewCartTableFull fonksiyonu
+echo $cart->viewCartTablePrice();
+
+print_r($cart);
+
+
+
+/*viewCartTableFull fonksiyonu
 
 sepetteki ler hakkında ürün adet ve tutar olarak full liste bilgi verir.sepetim sayfası bunu kullanır
 
 http://cms.dev/sepet?action=table
-```php
-   $cart = new \stnc\shoppingCart\Cart('stnc', PUBLIC_PATH);
-   
-     /*  sepet sayfası na basılıcak yerdir
-      * sepetteki ler hakkında table olarak ayrıntılı bilgi verir
-      */
-  
- echo $cart->viewCartTableFull();
-```
-## cartCount fonksiyonu
+
+       sepet sayfası na basılıcak yerdir
+      sepetteki ler hakkında table olarak ayrıntılı bilgi verir
+
+
+*/
+
+echo $cart->viewCartTableFull();
+/*
+cartCount fonksiyonu
 
 sepetteki ürün toplamı hakkında bilgi verir sepette kaç Adet ürün ve kaç ürün var
 
 http://cms.dev/sepet?action=sepet_tutari
-```php
-$cart = new \stnc\shoppingCart\Cart('stnc', PUBLIC_PATH);
-print_r( $cart->cartCount());
-//çıktısı             
-/*
-Array
-(
-    [toplam_urun] => 2
-    [toplam_adet] => 4
-)
+
+
 */
-```
+print_r( $cart->cartCount());
+die;
+/*emptyCart fonksiyonu
+
+sepeti boşaltmak için kullanılır
+
+http://cms.dev/sepet?action=bosalt*/
+$cart->emptyCart();
+print_r( $cart->viewCart());
