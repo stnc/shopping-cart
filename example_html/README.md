@@ -4,4 +4,6 @@
 
 ## Preview
 
-[![Heroic Features Preview](https://startbootstrap.com/assets/img/templates/heroic-features.jpg)](https://blackrockdigital.github.io/startbootstrap-heroic-features/)
+<strong> SCREENSHOT </strong>
+
+<img  src="https://raw.githubusercontent.com/stnc/shopping-cart/master/screen.png">
