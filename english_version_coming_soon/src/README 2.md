@@ -1,7 +1,3 @@
-https://startbootstrap.com/templates/heroic-features/
-
-
-
 # Alışveriş sepeti sistemi
 
 Alışveriş sepeti sistemi Bu sınıf kullanıcılar siteyi ziyaret ederken ürünlerin eklenebileceği, <br>
@@ -11,9 +7,7 @@ Alışveriş sepetindeki ürünlerin silinmesi, miktarının değiştirlmesi vey
 
 ## Sepet fonsiyonunu tanıtmak
 ```php
-  define('SESSION_PREFIX', 'stnccart_');
-define('BISLEM_RESIM_BULUNAMADİ','');
-session_start();
+
         // eğer use olarak kullanılacaksa
         // use use \stnc\shoppingCart\Cart;
         // $sepet = new cart($cart_name, PUBLIC_PATH);
@@ -32,11 +26,11 @@ http://cms.dev/sepet?action=ekle
                 'UrunID' => 02,
                 'UrunAdi' => "çikolata  ",
                 'Resim' => "biskuvi.jpg",
-                'ResimURL' => "",
+                'ResimURL' => "biskuvi.jpg",
                 'URL' => "biskuvi.jpg",
                 'Fiyat' => 40.99,
-                "totalEach" => 1, //stok adeti
-                "totalPrice" => ""
+                "ToplamAdet" => 1,
+                "ToplamFiyat" => ""
             );
             // sepete eklenenen her ürün için benzersiz bir id verilmesi gerekir
             // 34 burada bunu temsil ediyor
@@ -51,8 +45,8 @@ http://cms.dev/sepet?action=ekle
                 'ResimURL' => "biskuvi.jpg",
                 'URL' => "biskuvi.jpg",
                 'Fiyat' => 5,
-                "totalEach" => 1,
-                "totalPrice" => ""
+                "ToplamAdet" => 1,
+                "ToplamFiyat" => ""
             );
             $cart->addToCart("125", $data);
 ```
@@ -70,7 +64,7 @@ http://cms.dev/sepet?action=sil
                 'ResimURL' => "biskuvi.jpg",
                 'URL' => "biskuvi.jpg",
                 'price' => 40.99,
-                "totalEach" => 1,
+                "ToplamAdet" => 1,
                 "totalPrice" => ""
             );
 
@@ -93,8 +87,8 @@ http://cms.dev/sepet?action=ekle
                 'ResimURL' => "biskuvi.jpg",
                 'URL' => "biskuvi.jpg",
                 'Fiyat' => 40.99,
-                "totalEach" => 1,
-                "totalPrice" => ""
+                "ToplamAdet" => 1,
+                "ToplamFiyat" => ""
             );
        $cart->addToCart("125", $data);
             
@@ -115,8 +109,8 @@ http://cms.dev/sepet?action=ekle
                 'ResimURL' => "biskuvi.jpg",
                 'URL' => "biskuvi.jpg",
                 'Fiyat' => 40.99,
-                "totalEach" => 1,
-                "totalPrice" => ""
+                "ToplamAdet" => 1,
+                "ToplamFiyat" => ""
             );
        	$cart->addToCart("125", $data);
         $cart->viewCart();

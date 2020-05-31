@@ -5,7 +5,7 @@
  *
  */
 namespace stnc\shoppingCart;
-
+session_start();
 /**
  * Price hesaplamaları ve o türden özellikdeki bilgileri barındıracak
  * Copyright (c) 2015
@@ -20,7 +20,7 @@ namespace stnc\shoppingCart;
  * @link http://github.com/stnc
  * @license http://www.opensource.org/licenses/mit-license.php The MIT License
  */
-
+const SESSION_PREFIX = "stnccart_";
 class Cart
 {
 
@@ -383,14 +383,14 @@ else {
      * içinden gelen bu $sepet->viewCartTableFull('liste'); istek gibi
      * @return mixed
      */
-    public function viewCartTableFull()
+    public function viewCartTableFull($liste = "b")
     {
         if (sizeof($this->session) > 0) {
             
-           
-                $class = 'class="table table-striped"';
-            
-        
+            if ($liste != "liste")
+                $class = '';
+            else
+                $class = 'class="body-wrap" border="1" cellspacing="0" cellpadding="0"';
             
             $products = '
         <div class="cart-info">
@@ -414,12 +414,12 @@ else {
                 // sil diğer kodları <a onclick="sepeti_sil_sepetim(' . $id . ',true );" href="javascript: void(0)" class="sil">
                 
                 if ($item['ResimURL'] == '') {
-                    $resim = noPicture;
+                    $resim = BISLEM_RESIM_BULUNAMADİ;
                 } else {
                     $resim = $item['ResimURL'];
                 }
                 
-                
+                if ($liste != "liste") {
                     $input='';
                     $item['amountOfStock']='';
                     if ($item['StokBirimi'] == 'ADET') {
@@ -458,9 +458,11 @@ else {
                          ' . $input . '
 					</div>
                             
-                            <a href="?clear=' . $id . '"  class="sil">
+                            <a href="/sepet/sepet_sil/' . $id . '"  class="sil">
 			   						 <img title="Kaldır" alt="Kaldır" src="' . $this->public_path . '/public/img/remove.png" onclick="var r = confirm(\'Emin misiniz?\'); if (r == true) return true; else return false;">';
-              
+                } else {
+                    $deger = $item['totalEach'];
+                }
                 
                 $products .= '<tr id="full-cart' . $id . '" class="sepetsatiri">
                 <td class="image">
