@@ -4,7 +4,7 @@
 
 <strong> SCREENSHOT </strong>
 
-<img  src="https://raw.githubusercontent.com/stnc/golang-echo-gorm-pagination-BLOG/crud/scrshot.png">
+<img  src="https://raw.githubusercontent.com/stnc/shopping-cart/master/screen.png">
 
 # Alışveriş sepeti sistemi
 
