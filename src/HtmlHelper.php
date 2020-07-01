@@ -89,7 +89,7 @@ class HtmlHelper extends Cart
                 <td class="image">İmage</td>
                 <td class="name">Content</td>
 
-                <td class="quantity">Each</td>
+                <td class="quantity">Action</td>
                  <td class="unit">unit</td>
                 <td class="price"> Price</td>
                 <td class="total">total</td>
