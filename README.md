@@ -1,4 +1,11 @@
 
+# Alışveriş sepeti sistemi
+
+Alışveriş sepeti sistemi Bu sınıf kullanıcılar siteyi ziyaret ederken ürünlerin eklenebileceği, <br>
+"session"da saklanan bir alışveriş sepeti oluşturmamız için bize yardım eder.<br>
+Basit esnek ve kolay uygulabilir gelişmiş bir sınıfdır.<br>
+Alışveriş sepetindeki ürünlerin silinmesi, miktarının değiştirlmesi veya yeni ürün eklenmesi gibi işlemlere olanak sağlar.
+
 # Yükleme /Install  
 
 composer require stnc/shopping-cart
@@ -12,12 +19,7 @@ composer require stnc/shopping-cart
 <hr>
 
 
-# Alışveriş sepeti sistemi
 
-Alışveriş sepeti sistemi Bu sınıf kullanıcılar siteyi ziyaret ederken ürünlerin eklenebileceği, <br>
-"session"da saklanan bir alışveriş sepeti oluşturmamız için bize yardım eder.<br>
-Basit esnek ve kolay uygulabilir gelişmiş bir sınıfdır.<br>
-Alışveriş sepetindeki ürünlerin silinmesi, miktarının değiştirlmesi veya yeni ürün eklenmesi gibi işlemlere olanak sağlar.
 
 ## Sepet fonsiyonunu tanıtmak
 ```php
