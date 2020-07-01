@@ -1,6 +1,9 @@
 {
     "name": "stnc/shopping-cart",
     "description": "php shopping cart class",
+    "keywords": ["php", "cart", "session"],
+    "license": "MIT",
+    "version": "2.0.0",
         "require": {
         "php": ">=5.4.0"
     },
