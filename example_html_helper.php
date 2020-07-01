@@ -12,7 +12,7 @@ session_start();
 use \Stnc\ShoppingCart\HtmlHelper;
 
 
-$cart_name = 'stncCart'; // sepetin session değerine bir değer atadık
+$cart_name = 'stnc'; // sepetin session değerine bir değer atadık
 $cart= new HtmlHelper($cart_name);
 $cart->groups=true;
 
