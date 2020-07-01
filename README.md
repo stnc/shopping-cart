@@ -6,6 +6,12 @@
 
 <img  src="https://raw.githubusercontent.com/stnc/shopping-cart/master/screen.png">
 
+
+# Yükleme /Install  
+
+composer require stnc/shopping-cart
+
+
 # Alışveriş sepeti sistemi
 
 Alışveriş sepeti sistemi Bu sınıf kullanıcılar siteyi ziyaret ederken ürünlerin eklenebileceği, <br>
