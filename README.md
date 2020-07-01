@@ -1,4 +1,7 @@
 
+# Yükleme /Install  
+
+composer require stnc/shopping-cart
 
 <hr>
 
@@ -6,10 +9,7 @@
 
 <img  src="https://raw.githubusercontent.com/stnc/shopping-cart/master/screen.png">
 
-
-# Yükleme /Install  
-
-composer require stnc/shopping-cart
+<hr>
 
 
 # Alışveriş sepeti sistemi
