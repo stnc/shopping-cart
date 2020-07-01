@@ -11,12 +11,9 @@ define('BISLEM_RESIM_BULUNAMADİ','');
 session_start();
 
 
-//use \Stnc\ShoppingCart\Cart;
-use \Stnc\ShoppingCart\HtmlHelper;
+use \Stnc\ShoppingCart\Cart;
 
-$help= new HtmlHelper("sdsd","sd");
-$help->hello();
-die();
+
 $cart_name = 'stnc'; // sepetin session değerine bir değer atadık
 $cart = new Cart($cart_name, 's');
 
@@ -76,12 +73,16 @@ http://cms.dev/sepet?action=sil
 */
 
 $cart->removeCart(100);
+
+
+$cart->viewCartArray();
+
 /*viewCart fonksiyonu
 
 Sepeti array olarak verir
 
 http://cms.dev/sepet?action=ekle*/
-print_r( $cart->viewCart());
+//print_r( $cart->viewCart());
 
 
 /*GetJson fonksiyonu
