@@ -4,7 +4,7 @@
  * @author selman.tunc
  *
  */
-namespace stnc\shoppingCart;
+namespace Stnc\ShoppingCart;
 
 /**
  * Price hesaplamaları ve o türden özellikdeki bilgileri barındıracak
@@ -24,21 +24,21 @@ namespace stnc\shoppingCart;
 class Cart
 {
 
-    public $public_path;
+
     public $productWareHouseControl;
     /**
      * cookie aktif olacak mı
      *
-     * @var $cookie_enabled
+     * @var $cookieEnabled
      */
-    public $cookie_enabled = true;
+    public $cookieEnabled = true;
 
     /**
      * cookie nin tarihi
      *
-     * @var $Cookie_Date
+     * @var $cookieDate
      */
-    public $Cookie_Date = 86400;
+    public $cookieDate = 86400;
     // 1 Gün --- one date
 
     /**
@@ -72,7 +72,7 @@ class Cart
     /**
      * resim klasoruleri için varsayaılan yolu set eder
      *
-     * @var string $PUBLIC_PATH
+     * @var string $publicPath
      */
     private $publicPath = null;
 
@@ -97,10 +97,11 @@ class Cart
      * @param string $publicPath
      *            puplic klasoru
      */
-    public function __construct($sessionName, $publicPath)
+    public function __construct($sessionName_, $publicPath)
     {
-        $this->$sessionName = $sessionName;
-        $this->public_path = $publicPath;
+
+        $this->sessionName = $sessionName_;
+        $this->publicPath = $publicPath;
         $this->getSessionCart();
     }
 
@@ -110,7 +111,7 @@ class Cart
         unset($this->session);
     }
 
-    // sihirli ayarlar
+    // magic config
     public function __set($name, $value)
     {
         switch ($name) {
@@ -126,6 +127,7 @@ class Cart
     }
 
     /**
+     * cart product delete
      * sepetten ürünü çıkartır
      *
      * @param int $id
@@ -150,7 +152,7 @@ class Cart
      * @param int $id
      *
      */
-    public function AJAXremoveCart($id, $adet = 1)
+    public function AjaxRemoveCart($id, $adet = 1)
     {
         $this->lastAdded = $id;
         if (count($this->session) > 0) {
@@ -187,11 +189,13 @@ class Cart
             }
         } else {
            
-            $this->session[$id+rand(1,500)] = $data;
-            
-        }
+            $rndID=$id+(rand(1,500)+1);
+            $this->session[ $rndID] = $data;
 
-     //$_SESSION[$this->$sessionName][$id]['totalEach'] += $_SESSION[$this->$sessionName][$id]['totalEach'] + $total; echo $_SESSION[$this->$sessionName][$id]['totalEach'];
+        
+        }
+//    print_r($this->session);
+   //  $_SESSION[$this->sessionName][$id]['totalEach'] += $_SESSION[$this->sessionName][$id]['totalEach'] + $total; echo $_SESSION[$this->sessionName][$id]['totalEach'];
         return $this->setSessionCart();
     }
 
@@ -202,18 +206,22 @@ class Cart
      */
     public function updatesubTotal()
     {
+
+       // print_r($_SESSION[$this->sessionName]);
         $totalPrice = 0;
         if (sizeof($this->session) > 0) {
             foreach ($this->session as $id => $item) {
 
                 //php 7 http://php.net/manual/en/migration71.other-changes.php
                 if (is_numeric($item['totalPrice'])) {
-                    $totalPrice += $totalPrice + $item['totalPrice'];
+                    $totalPrice +=  $item['totalPrice'];
+                    //     $totalPrice += $totalPrice + $item['totalPrice']; //bu bug vermiş -----
                 }
 
                 // $totalPrice += $item['totalPrice'] ;//silme
-                $this->subTotal = $totalPrice;
+            
             }
+            $this->subTotal = $totalPrice;
             return ($totalPrice);
         } else {
             return 0;
@@ -227,7 +235,9 @@ class Cart
      */
     public function emptyCart()
     {
-        unset($_SESSION[$this->$sessionName]);
+    //     unset($_SESSION[$this->sessionName]);
+    //     die()
+    // ;
         foreach ($this->session as $key => $val) {
             unset($this->session[$key]);
         }
@@ -235,49 +245,12 @@ class Cart
         return $this->setSessionCart();
     }
 
+   
     /*
-     * sepetteki ler hakkında bu mini karta json verisi gönderir
-     * ajax sepete ekle ye gibi minik olan alana bilgi gondermeye yarar
-     * @return mixed
-     * TODO : bak buna fazlalık aslında birisi ve bootsrap lı bi yapı gerekiyor
-     */
-    private function viewCartTableMiniJSON()
-    {
-        if (sizeof($this->session > 0)) {
-            $products = '<table>
-		<tbody>
-		';
-            foreach ($this->session as $id => $item) {
-                // $this->session [$id] ['totalPrice'] = ($this->session [$id] ['price'] * $this->session [$id] ['totalEach']);
-                $products .= '<tr><td class="image"><a href="' . $item['URL'] . '">
-				<img title="' . $item['URL'] . '" alt="' . $item['UrunAdi'] . '" width="43" height="43" src="' . $item['ResimURL'] . '"></a></td>
-                <td class="name">
-                <a href="' . $item['URL'] . '">
-				<div style="width: 115px; height: 60px; overflow: hidden;">"' . $item['UrunAdi'] . '"</div>
-				</a></td>
-				<td class="quantity" style="width: 90px;">
-				<span class="price2">' . ($item['price']) . 'x</span>' . $item['totalEach'] . ' ' . ($item['StokBirimi']) . '
-				</td>
-				<td class="total" style="width: 90px;">' . ($item['totalPrice']) . ' dollar</td>
-					<td class="remove"><a  onclick="sepeti_sil(' . $id . ',true );" href="javascript: void(0)"  class="sil">
-			    <img title="Kaldır" alt="Kaldır" src="' . $this->public_path . '/public/img/remove.png"></a></td></tr>';
-            }
-            $products .= "
-		</tbody>
-		</table>";
-
-            return $products;
-        } else {
-            return "<h1>Alışveriş Sepetiniz Boş</h1><br> Sepetiniz Boş";
-        }
-    }
-
-    /*
-     * sepetteki ler hakkında bu mini karta json verisi gönderir
-     * ajax sepete ekle ye gibi minik olan alana bilgi gondermeye yarar
+     * son eklenen ürünün fiyat bilgisini verir
      * @return mixed
      */
-    private function SonEKlenenUrunPriceDegeri()
+    private function addLastCartPriceInfo()
     {
         if (sizeof($this->session > 0)) {
             $id = $this->lastAdded;
@@ -294,7 +267,7 @@ class Cart
      * id farklı değer ise sepet controller içinden tetiklenmesi gerekiyor anlamına gelir
      * @return mixed
      */
-    public function SonEKlenenUrunAdeti($id = false)
+    public function addLastCartPiece($id = false)
     {
         if ($id != false) {
             $id = $id;
@@ -314,7 +287,7 @@ class Cart
      * ajax sepete ekle ye gibi minik olan alana bilgi gondermeye yarar
      * @return mixed
      */
-    private function SonEKlenenUrunStokAdeti()
+    private function addLastCartStockPiece()
     {
         $id = $this->lastAdded;
         if (sizeof($this->session > 0)) {
@@ -324,219 +297,8 @@ class Cart
         }
     }
 
-    /*
-     * sepetteki ler hakkında bilgi verir
-     * ajax sepete ekle ye gibi minik olan alana dışarı bilgi gondermeye yarar
-     * en üst alandaki header view içindeki bilgilerin görüneceği alandır
-     * @param $type json a cıktı gonderilecek mi
-     * @return mixed
-     */
-    public function MiniSepet()
-    {
-        if (sizeof($this->session) > 0) {
-            $products = '<div class="mini-cart-info"><table>	<tbody>	';
-
-            $products_uyarili = '       <table class="pull-left">
-            <tbody>
-
-            <tr>
-            <td class="right"><b>Özür dileriz ' . CART_MAX_PRICE . ' TL altındaki siparişlerinizi kabul etmiyoruz</b> </td>
-
-            </tr>
-            </tbody>
-            </table> <table>
-		<tbody>
-		';
-
-            foreach ($this->session as $id => $item) {
-                // $this->session [$id] ['totalPrice'] = ($this->session [$id] ['price'] * $this->session [$id] ['totalEach']);
-                $products .= '<tr id="mini-cart' . $id . '"><td class="image"><a href="' . $item['URL'] . '">
-				<img title="' . $item['URL'] . '" alt="' . $item['UrunAdi'] . '" width="43" height="43" src="' . $item['ResimURL'] . '"></a></td>
-                <td class="name">
-                <a href="' . $item['URL'] . '">
-				<div style="width: 115px; height: 60px; overflow: hidden;">"' . $item['UrunAdi'] . '"</div>
-				</a></td>
-				<td class="quantity" style="width: 90px;">
-				<span class="price2">' . $this->TL_Format($item['price']) . 'x</span>' . $item['totalEach'] . 'KG
-				</td>
-				<td class="total" style="width: 90px;">' . $this->TL_Format($item['totalPrice']) . ' TL</td>
-				<td class="remove"><a  onclick="sepeti_sil(' . $id . ',true );" href="javascript: void(0)"  class="sil">
-			    <img title="Kaldır" alt="Kaldır" src="' . $this->public_path . '/public/img/remove.png"></a></td></tr>';
-            }
-            $products .= "
-		</tbody>
-		</table>
-         </div>";
-
-            $products .= '<div class="mini-cart-total">' . $this->viewCartTablePrice() . '</div>
-            <div class="checkout">
-			<a href="javascript: void(0)" class="button sepetikapat"><i class="fa fa-times" aria-hidden="true"></i> Kapat</a> &nbsp;
-			<a href="/sepetim/" class="button">Sepetim</a> &nbsp;
-			<a class="button" href="/adres">Ödeme Yap</a>
-			</div>';
-
-            return $products;
-        } // direk olarak sepet boş uyarısı vermesi içindir
-        else {
-            return '<div class="mini-cart-info"><h3 style="text-align:center;color:#000">Alışveriş Sepetiniz Boş</h1></div>
-                <div class="mini-cart-total"></div>
-				<div style="display:none" class="checkout">
-					<a href="javascript: void(0)" class="button sepetikapat"><i class="fa fa-times" aria-hidden="true"></i> Kapat</a> &nbsp;
-				<a href="/sepetim/" class="button">Sepetim</a> &nbsp;
-			<a class="button" href="/adres">Ödeme Yap</a>
-			</div>';
-        }
-    }
-
-    /*
-     * sepet sayfası na basılıcak yerdir
-     * sepetteki ler hakkında bilgi verir
-     * $liste nin anlamı sadece cart ın listelenmesinin isteyen istekler olabilir mesela odeme
-     * içinden gelen bu $sepet->viewCartTableFull('liste'); istek gibi
-     * @return mixed
-     */
-    public function viewCartTableFull()
-    {
-        if (sizeof($this->session) > 0) {
-
-            $class = 'class="table table-striped"';
-
-            $products = '
-        <div class="cart-info">
-       	<table ' . $class . '>
-            <thead>
-              <tr>
-                <td class="image">Ürün Görseli</td>
-                <td class="name">Ürün Açıklaması</td>
-
-                <td class="quantity">Adet</td>
-                 <td class="unit">Birim</td>
-                <td class="price">Birim Price</td>
-                <td class="total">Toplam</td>
-              </tr>
-            </thead>
-            <tbody class="sepetsatirlari">';
-
-            foreach ($this->session as $id => $item) {
-                // $this->session [$id] ['totalPrice'] = ($this->session [$id] ['price'] * $this->session [$id] ['totalEach']);
-
-                // sil diğer kodları <a onclick="sepeti_sil_sepetim(' . $id . ',true );" href="javascript: void(0)" class="sil">
-
-                if ($item['ResimURL'] == '') {
-                    $resim = noPicture;
-                } else {
-                    $resim = $item['ResimURL'];
-                }
-
-                $input = '';
-                $item['amountOfStock'] = '';
-                if ($item['StokBirimi'] == 'ADET') {
-
-                    $input = '<div class="input-group spinner table-spinner" data-trigger="spinner">
-    <input type="text" class="form-control quantity text-center urun_adeti" value="' . $item['totalEach'] . '"
-                        id="urun_adeti_' . $item['UrunID'] . '" data-min="1" data-max="' . $item['amountOfStock'] . '" data-rule="quantity">
-                        <div class="input-group-addon">
-                                <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>
-                                <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>
-                            </div>
-                        </div>
-                        ';
-                }
-                //Kilogram //KİLOGRAM
-                if ($item['StokBirimi'] == 'Kilogram') {
-
-                    $input = '<div class="input-group spinner table-spinner" data-trigger="spinner">
-    <input type="text" class="form-control quantity text-center urun_adeti" value="' . $item['totalEach'] . '"
-                        id="urun_adeti_' . $item['UrunID'] . '" data-step="0.10" data-min="0.10" data-max="' . $item['amountOfStock'] . '" data-rule="currency">
-                        <div class="input-group-addon">
-                                <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>
-                                <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>
-                            </div>
-                        </div>
-                        ';
-
-                }
-
-                $deger = '
-
-                    <div class="input-group">
-                         ' . $input . '
-					</div>
-
-                            <a href="?clear=' . $id . '"  class="sil">
-			   						 <img title="Kaldır" alt="Kaldır" src="' . $this->public_path . '/public/img/remove.png" onclick="var r = confirm(\'Emin misiniz?\'); if (r == true) return true; else return false;">';
-
-                $products .= '<tr id="full-cart' . $id . '" class="sepetsatiri">
-                <td class="image">
-				<a href="' . $item['URL'] . '">
-
-                <img src="' . $resim . '" style="height:35px;" alt="' . $item['UrunAdi'] . '" title="' . $item['UrunAdi'] . '"></a>
-
-                </td>
-                <td class="name">
-                <a href="' . $item['URL'] . '">' . $item['UrunAdi'] . '</a>
-                </td>
-
-                <td class="quantity">
-            			' . $deger . '
-			    </td>
-            			             <td class="unit">
-            			' . ($item['StokBirimi']) . '
-			    </td>
-			    <td class="price">' . ($item['price']) . ' TL</td>
-                <td id="total_' . $item['UrunID'] . '" class="total">' . ($item['totalPrice']) . ' TL</td>
-              </tr>';
-            }
-            $products .= ' </tbody>
-          </table>
-        </div>
-   ';
-            return $products;
-        } else {
-            return '<h1>Alışveriş Sepetiniz Boş</h1><br>
-					<a href="/">Alışverişe devam etmek için buraya tıklayınız.</a>
-					';
-        }
-    }
-
-    /*
-     * sepetteki ler hakkında bilgi verir
-     * @return mixed
-     */
-    public function viewCartTablePrice()
-    {
-        $products = "<table>
-		<tbody>
-		";
-        if (sizeof($this->session) > 0) {
-
-            $tot = $this->cartCount();
-            $products .= '<tr>
-							<td class="right"><b>Toplam Ürün:</b></td>
-							<td class="right">' . $tot["toplam_urun"] . ' Ürün</td>
-							</tr>
-							<tr>
-							<td class="right"><b>Toplam Adet:</b></td>
-							<td class="right">' . $tot["toplam_adet"] . ' Adet</td>
-							</tr>
-							<tr class="price2">
-							<td class="right"><b>Toplam Tutar:</b></td>
-							<td class="right">' . ($this->subTotal) . ' TL</td>
-							<tr>';
-        } else { // sepet boş ise
-            $products .= '
-							<tr>
-							<td colspan="2" ><h3 style="text-align:center">Sepetinizde ürün bulunmamaktadır</h3></td>
-							</tr>
-';
-        }
-        $products .= "
-		</tbody>
-		</table>";
-
-        return $products;
-    }
-
+  
+   
     /*
      * sepetteki ler hakkında bilgi verir
      * @return mixed
@@ -548,60 +310,29 @@ class Cart
                 echo '<pre>';
                 print_r($this->session);
                 echo '</pre>';
-                print_r($_SESSION[$this->$sessionName]);
+                print_r($_SESSION[$this->sessionName]);
             }
         }
     }
+
 
     /*
-     * sepeti json olarak verir
-     * @return array json doner
+     * sepetteki ler hakkında bilgi verir
+     * @return mixed
      */
-    public function getJSON()
+    public function viewCartArray()
     {
-        if (!$_SESSION[$this->productWareHouseControl]) {
-            if (sizeof($this->session) > 0) {
-                $tot = $this->cartCount();
-                $json = array(
-                    "DURUM" => 'ok',
-                    // "SonEKlenenUrunStokAdeti" => $this->SonEKlenenUrunStokAdeti(),/*burasının amacı sepetim sayfasında degisken_max_adetine deger vermesi içindir */
-                    "SepetSatirlari" => $this->viewCartTableMiniJSON(),
-                    "SonEKlenenUrunPriceDegeri" => $this->SonEKlenenUrunPriceDegeri(),
-                    "SonEKlenenUrunAdeti" => $this->SonEKlenenUrunAdeti(),
-                    "SepetToplamKodu" => $this->viewCartTablePrice(),
-                    "SepetUst" => $tot["toplam_adet"] . ' Adet <strong class="price2">' . $this->subTotal . ' TL</strong>',
-                    "SepettotalPrice" => $this->updatesubTotal() . ' TL',
-                );
-                return json_encode($json);
-            } else {
-                $json = array(
-                    "DURUM" => 'bos',
-                    "SepetSatirlari" => null,
-                    "SonEKlenenUrunPriceDegeri" => null,
-                    "SonEKlenenUrunAdeti" => null,
-                    "SepetToplamKodu" => $this->viewCartTablePrice(),
-                    "SepetUst" => "",
-                    'SepetLimit' => true,
-                    "SepettotalPrice" => "",
-                );
-                return json_encode($json);
-            }
-        } else {
+        if (isset($_SESSION[$this->sessionName])) {
+            if (count($this->session) > 0) {
+             
+                return $this->session;
 
-            $json = array(
-                "DURUM" => 'stok_asimi',
-                "SepetSatirlari" => $this->viewCartTableMiniJSON(),
-                "SonEKlenenUrunAdeti" => $this->SonEKlenenUrunAdeti(),
-                "SonEKlenenUrunPriceDegeri" => $this->SonEKlenenUrunPriceDegeri(),
-                "SepetToplamKodu" => $this->viewCartTablePrice(),
-                'SepetLimit' => true,
-                "SepetUst" => $tot["toplam_adet"] . ' Adet <strong class="price2">' . $this->subTotal . ' TL</strong>',
-                "SepettotalPrice" => $this->subTotal . ' TL',
-            );
-            return json_encode($json);
+          
+            }
         }
     }
 
+  
     /*
      * sepetteki ürün toplamı hakkında bilgi verir
      * sepette kaç Adet ürün ve kaç ürün var
@@ -616,22 +347,23 @@ class Cart
                 $totalEach[] = $val2['totalEach'];
             }
 
-            $toplam_urun = count($this->session); // sadecce tekil ürünü verir
+            $totalProduct = count($this->session); // sadecce tekil ürünü verir
 
-            $toplam_adet = array_sum($totalEach); // tumunun toplamını verir yani bir ürünü bi kaç sepete atmış olablir onları da sayar
+            $totalPiece = array_sum($totalEach); // tumunun toplamını verir yani bir ürünü bi kaç sepete atmış olablir onları da sayar
 
             return array(
-                "toplam_urun" => $toplam_urun,
-                "toplam_adet" => $toplam_adet,
+                "totalProduct" => $totalProduct,
+                "totalPiece" => $totalPiece,
             );
         } else {
             return array(
-                "toplam_adet" => 0,
+                "totalPiece" => 0,
             );
         }
     }
 
     /*
+     *CART INFORMATION 
      * sepetteki ürün hakkında bilgiler verir
      * toplam urun
      * toplam adet
@@ -643,15 +375,15 @@ class Cart
         if (sizeof($this->session) > 0) {
             $tot = $this->cartCount();
             $products = array(
-                'toplam_urun' => $tot["toplam_urun"],
-                'toplam_adet' => $tot["toplam_adet"],
-                'toplam_tutar' => $this->tr_number($this->subTotal),
+                'totalProduct' => $tot["totalProduct"],
+                'totalPiece' => $tot["totalPiece"],
+                'totalPrice' => $this->tr_number($this->subTotal),
             );
         } else { // sepet boş ise
             $products = array(
-                'toplam_urun' => 0,
-                'toplam_adet' => 0,
-                'toplam_tutar' => 0,
+                'totalProduct' => 0,
+                'totalPiece' => 0,
+                'totalPrice' => 0,
             );
         }
 
@@ -665,7 +397,7 @@ class Cart
      */
     protected function getSessionCart()
     {
-        // $this->session = isset ( $_SESSION [$this->$sessionName] ) ? $_SESSION [$this->$sessionName] : array (); // org
+        // $this->session = isset ( $_SESSION [$this->sessionName] ) ? $_SESSION [$this->sessionName] : array (); // org
         if (!isset($_SESSION[$this->sessionName]) && (isset($_COOKIE[$this->sessionName]))) {
             $this->session = unserialize(base64_decode($_COOKIE[$this->sessionName]));
         } else {
@@ -681,12 +413,14 @@ class Cart
     // en önemli yer
     protected function setSessionCart()
     {
+       // print_r($_SESSION);
         $_SESSION[$this->sessionName] = $this->session;
+   // print_r(    $_SESSION[$this->sessionName]);
         $this->updatesubTotal(); // Priceları güncelle
 
-        //   if ($this->cookie_enabled) {
-        //   $arrays = base64_encode ( serialize ( $_SESSION [$this->$sessionName] ) );
-        //   setcookie ( $this->$sessionName, $arrays, time () + $this->Cookie_Date, '/' );
+        //   if ($this->cookieEnabled) {
+        //   $arrays = base64_encode ( serialize ( $_SESSION [$this->sessionName] ) );
+        //   setcookie ( $this->sessionName, $arrays, time () + $this->cookieDate, '/' );
         //   }
 
         return true;

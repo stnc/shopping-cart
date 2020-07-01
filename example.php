@@ -11,9 +11,14 @@ define('BISLEM_RESIM_BULUNAMADİ','');
 session_start();
 
 
-use \stnc\shoppingCart\Cart;
+//use \Stnc\ShoppingCart\Cart;
+use \Stnc\ShoppingCart\HtmlHelper;
+
+$help= new HtmlHelper("sdsd","sd");
+$help->hello();
+die();
 $cart_name = 'stnc'; // sepetin session değerine bir değer atadık
-$cart = new cart($cart_name, 's');
+$cart = new Cart($cart_name, 's');
 
 /* other call
 $cart_other = new  \stnc\cart\Cart('stnc', 'ds');
@@ -100,7 +105,9 @@ Toplam Ürün:	2 Ürün
 Toplam Adet:	4 Adet
 Toplam Tutar:	91,98 TL
 */
-echo $cart->viewCartTablePrice();
+
+
+//echo $cart->viewCartTablePrice();
 
 print_r($cart);
 
@@ -118,7 +125,7 @@ http://cms.dev/sepet?action=table
 
 */
 
-echo $cart->viewCartTableFull();
+//echo $cart->viewCartTableFull();
 /*
 cartCount fonksiyonu
 

@@ -7,3 +7,8 @@
 <strong> SCREENSHOT </strong>
 
 <img  src="https://raw.githubusercontent.com/stnc/shopping-cart/master/screen.png">
+
+
+bakılacak 
+
+https://github.com/stnc/stnc-framework-skeleton/blob/master/composer.json
