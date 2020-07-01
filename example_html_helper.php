@@ -4,85 +4,98 @@ ini_set('display_startup_errors', 1);
 
 error_reporting(E_ALL);
 require_once 'vendor/autoload.php';
-/*use \DB\MYSQL as dbs;
-$db = new dbs\Mysql();*/
-  define('SESSION_PREFIX', 'selman');
-define('BISLEM_RESIM_BULUNAMADİ','');
+
+
 session_start();
 
 
-//use \Stnc\ShoppingCart\Cart;
 use \Stnc\ShoppingCart\HtmlHelper;
 
-$help= new HtmlHelper("sdsd","sd");
-$help->hello();
-die();
-$cart_name = 'stnc'; // sepetin session değerine bir değer atadık
-$cart = new Cart($cart_name, 's');
 
-/* other call
-$cart_other = new  \stnc\cart\Cart('stnc', 'ds');
-print_r($cart_other);
-*/
+$cart_name = 'stncCart'; // sepetin session değerine bir değer atadık
+$cart= new HtmlHelper($cart_name);
+$cart->groups=true;
+
+//$help->hello(); // test
+
+
+//http://cart.test/example.php?add=100
+if (isset($_GET['add']) && $_GET['add']==100) {
 $data = array(
-		'UrunID' => 02,
-		'UrunAdi' => "çikolata  ",
-		'Resim' => "biskuvi.jpg",
-		'ResimURL' => "biskuvi.jpg",
-		'URL' => "biskuvi.jpg",
+		'productID' => 100,
+		'productName' => "ice cream",
+		'productImageURL' => "https://example.org/icecream.jpg",
+		'URL' => "https://example.org/product/100",
 		'price' => 40.99,
 		"totalEach" => 1,
-		'StokBirimi'=>'adet',
-		"totalPrice" => ""
+		'stockUnit'=>'unit',
+		"totalPrice" => 40.99
 );
 $cart->addToCart("100", $data);
+}
 
-$data = array(
-		'UrunID' => 02,
-		'UrunAdi' => "çikolata  ",
-		'Resim' => "biskuvi.jpg",
-		'ResimURL' => "biskuvi.jpg",
-		'URL' => "biskuvi.jpg",
-    'price' => 40.99,
-    "totalEach" => 1,
-    'StokBirimi'=>'adet',
-    "totalPrice" => ""
-);
-$cart->addToCart("110", $data);
 // sepete eklenenen her ürün için benzersiz bir id verilmesi gerekir
 // 100 burada bunu temsil ediyor
 // bu mesela şu olabilir urunler tablosundaki urun_id yada sku değeri olabilir
 // bunlar tekil değerlerdir
 
-
+//http://cart.test/example.php?add=110
+if (isset($_GET['add']) && $_GET['add']==110) {
 $data = array(
-		'UrunID' => 05,
-		'UrunAdi' => "kraker  ",
-		'Resim' => "biskuvi.jpg",
-		'ResimURL' => "biskuvi.jpg",
-		'URL' => "biskuvi.jpg",
-    'price' => 40.99,
-    "totalEach" => 1,
-    'StokBirimi'=>'adet',
-    "totalPrice" => ""
+	'productID' => 100,
+	'productName' => "cake",
+	'productImageURL' => "https://example.org/cake.jpg",
+	'URL' => "https://example.org/product/110",
+	'price' => 80,
+	"totalEach" => 1,
+	'stockUnit'=>'unit',
+	"totalPrice" => 80
 );
-$cart->addToCart("125", $data);
-echo '<pre>';
+$cart->addToCart("110", $data);
+}
+
 
 /*ürün silme
 Sepetden ürün silmek
-
-http://cms.dev/sepet?action=sil
 */
+//http://cart.test/example.php?remove=110
+if (isset($_GET['remove']) && $_GET['remove']==110) {
+$cart->removeCart(110);
+}
 
-$cart->removeCart(100);
-/*viewCart fonksiyonu
+//sepeti tamamen boşaltır 
+//http://cart.test/example.php?empty=true
+if (isset($_GET['empty']) && $_GET['empty']==true) {
+    $cart->emptyCart();
+    }
 
-Sepeti array olarak verir
 
-http://cms.dev/sepet?action=ekle*/
-print_r( $cart->viewCart());
 
+
+//  sepetteki ürün toplamı hakkında bilgi verir
+ print_r( $cart->cartCount());
+
+ //     * sepetteki ürün hakkında bilgiler verir 
+ print_r( $cart->cartInfo());
+
+
+ //html helper a ait olanlar 
+ if (isset($_GET['table']) && $_GET['table']==true) {
+ echo $cart->viewCartTableFull();
+ }
+ 
+ if (isset($_GET['json']) && $_GET['json']==true) {
+    echo $cart->getJSON();
+    }
+    
+    
+    if (isset($_GET['miniCard']) && $_GET['miniCard']==true) {
+    echo $cart->miniCart();
+    }     
+    
+    if (isset($_GET['viewCartTablePrice']) && $_GET['viewCartTablePrice']==true) {
+    echo $cart->viewCartTablePrice();
+    }   
 
 /*GetJson fonksiyonu
 
@@ -90,7 +103,7 @@ Sepeti json olarak geri dondürür ama json değerlerinde otomatik olarak ürün
 
 http://cms.dev/sepet?action=ekle*/
 
-//echo $cart->getJSON();
+//echo 
 
 
 /*viewCartTablePrice fonksiyonu
@@ -109,7 +122,6 @@ Toplam Tutar:	91,98 TL
 
 //echo $cart->viewCartTablePrice();
 
-print_r($cart);
 
 
 
@@ -135,12 +147,8 @@ http://cms.dev/sepet?action=sepet_tutari
 
 
 */
-print_r( $cart->cartCount());
-die;
-/*emptyCart fonksiyonu
 
-sepeti boşaltmak için kullanılır
-
-http://cms.dev/sepet?action=bosalt*/
-$cart->emptyCart();
-print_r( $cart->viewCart());
+//sepeti array donder 
+echo '<pre>';
+print_r($cart->viewCartArray());
+echo '</pre>';

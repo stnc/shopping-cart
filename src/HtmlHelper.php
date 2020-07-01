@@ -18,7 +18,7 @@ class HtmlHelper extends Cart
      */
     public function miniCart()
     {
-        if (sizeof($this->session) > 0) {
+        if (is_array($this->session) && sizeof($this->session) > 0) {
             $products = '<div class="mini-cart-info"><table>	<tbody>	';
 
   
@@ -26,17 +26,17 @@ class HtmlHelper extends Cart
             foreach ($this->session as $id => $item) {
                 // $this->session [$id] ['totalPrice'] = ($this->session [$id] ['price'] * $this->session [$id] ['totalEach']);
                 $products .= '<tr id="mini-cart' . $id . '"><td class="image"><a href="' . $item['URL'] . '">
-				<img title="' . $item['URL'] . '" alt="' . $item['UrunAdi'] . '" width="43" height="43" src="' . $item['ResimURL'] . '"></a></td>
+				<img title="' . $item['URL'] . '" alt="' . $item['productID'] . '" width="43" height="43" src="' . $item['productImageURL'] . '"></a></td>
                 <td class="name">
                 <a href="' . $item['URL'] . '">
-				<div style="width: 115px; height: 60px; overflow: hidden;">"' . $item['UrunAdi'] . '"</div>
+				<div style="width: 115px; height: 60px; overflow: hidden;">"' . $item['productID'] . '"</div>
 				</a></td>
 				<td class="quantity" style="width: 90px;">
 				<span class="price2">' . $item['price'] . 'x</span>' . $item['totalEach'] . 'KG
 				</td>
 				<td class="total" style="width: 90px;">' .$item['totalPrice'] . ' TL</td>
 				<td class="remove"><a  onclick="sepeti_sil(' . $id . ',true );" href="javascript: void(0)"  class="sil">
-			    <img title="Kaldır" alt="Kaldır" src="' . $this->publicPath . '/public/img/remove.png"></a></td></tr>';
+			    <img title="Remove" alt="Remove" src="' . $this->publicPath . '/public/img/remove.png"></a></td></tr>';
             }
             $products .= "
 		</tbody>
@@ -66,42 +66,6 @@ class HtmlHelper extends Cart
 
 
 
-     /*
-     * sepetteki ler hakkında bu mini karta json verisi gönderir
-     * ajax sepete ekle ye gibi minik olan alana bilgi gondermeye yarar
-     * @return mixed
-     * TODO : bak buna fazlalık aslında birisi ve bootsrap lı bi yapı gerekiyor
-     */
-    private function viewCartTableMiniJSON()
-    {
-        if (sizeof($this->session > 0)) {
-            $products = '<table>
-		<tbody>
-		';
-            foreach ($this->session as $id => $item) {
-                // $this->session [$id] ['totalPrice'] = ($this->session [$id] ['price'] * $this->session [$id] ['totalEach']);
-                $products .= '<tr><td class="image"><a href="' . $item['URL'] . '">
-				<img title="' . $item['URL'] . '" alt="' . $item['UrunAdi'] . '" width="43" height="43" src="' . $item['ResimURL'] . '"></a></td>
-                <td class="name">
-                <a href="' . $item['URL'] . '">
-				<div style="width: 115px; height: 60px; overflow: hidden;">"' . $item['UrunAdi'] . '"</div>
-				</a></td>
-				<td class="quantity" style="width: 90px;">
-				<span class="price2">' . ($item['price']) . 'x</span>' . $item['totalEach'] . ' ' . ($item['StokBirimi']) . '
-				</td>
-				<td class="total" style="width: 90px;">' . ($item['totalPrice']) . ' dollar</td>
-					<td class="remove"><a  onclick="sepeti_sil(' . $id . ',true );" href="javascript: void(0)"  class="sil">
-			    <img title="Kaldır" alt="Kaldır" src="' . $this->publicPath . '/public/img/remove.png"></a></td></tr>';
-            }
-            $products .= "
-		</tbody>
-		</table>";
-
-            return $products;
-        } else {
-            return "<h1>Alışveriş Sepetiniz Boş</h1><br> Sepetiniz Boş";
-        }
-    }
 
 
      /*
@@ -113,22 +77,22 @@ class HtmlHelper extends Cart
      */
     public function viewCartTableFull()
     {
-        if (sizeof($this->session) > 0) {
+        if (is_array($this->session) && sizeof($this->session) > 0) {
 
-            $class = 'class="table table-striped"';
+            $class = 'class="table table-striped" style="border:1px solid #ddd"';
 
             $products = '
         <div class="cart-info">
        	<table ' . $class . '>
             <thead>
               <tr>
-                <td class="image">Ürün Görseli</td>
-                <td class="name">Ürün Açıklaması</td>
+                <td class="image">İmage</td>
+                <td class="name">Content</td>
 
-                <td class="quantity">Adet</td>
-                 <td class="unit">Birim</td>
-                <td class="price">Birim Price</td>
-                <td class="total">Toplam</td>
+                <td class="quantity">Each</td>
+                 <td class="unit">unit</td>
+                <td class="price"> Price</td>
+                <td class="total">total</td>
               </tr>
             </thead>
             <tbody class="sepetsatirlari">';
@@ -138,19 +102,19 @@ class HtmlHelper extends Cart
 
                 // sil diğer kodları <a onclick="sepeti_sil_sepetim(' . $id . ',true );" href="javascript: void(0)" class="sil">
 
-                if ($item['ResimURL'] == '') {
+                if ($item['productImageURL'] == '') {
                     $resim = noPicture;
                 } else {
-                    $resim = $item['ResimURL'];
+                    $resim = $item['productImageURL'];
                 }
 
                 $input = '';
                 $item['amountOfStock'] = '';
-                if ($item['StokBirimi'] == 'ADET') {
+                if ($item['stockUnit'] == 'unit') {
 
                     $input = '<div class="input-group spinner table-spinner" data-trigger="spinner">
     <input type="text" class="form-control quantity text-center urun_adeti" value="' . $item['totalEach'] . '"
-                        id="urun_adeti_' . $item['UrunID'] . '" data-min="1" data-max="' . $item['amountOfStock'] . '" data-rule="quantity">
+                        id="urun_adeti_' . $item['productID'] . '" data-min="1" data-max="' . $item['amountOfStock'] . '" data-rule="quantity">
                         <div class="input-group-addon">
                                 <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>
                                 <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>
@@ -159,11 +123,11 @@ class HtmlHelper extends Cart
                         ';
                 }
                 //Kilogram //KİLOGRAM
-                if ($item['StokBirimi'] == 'Kilogram') {
+                if ($item['stockUnit'] == 'KG') {
 
                     $input = '<div class="input-group spinner table-spinner" data-trigger="spinner">
     <input type="text" class="form-control quantity text-center urun_adeti" value="' . $item['totalEach'] . '"
-                        id="urun_adeti_' . $item['UrunID'] . '" data-step="0.10" data-min="0.10" data-max="' . $item['amountOfStock'] . '" data-rule="currency">
+                        id="urun_adeti_' . $item['productID'] . '" data-step="0.10" data-min="0.10" data-max="' . $item['amountOfStock'] . '" data-rule="currency">
                         <div class="input-group-addon">
                                 <a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>
                                 <a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>
@@ -179,28 +143,28 @@ class HtmlHelper extends Cart
                          ' . $input . '
 					</div>
 
-                            <a href="?clear=' . $id . '"  class="sil">
-			   						 <img title="Kaldır" alt="Kaldır" src="' . $this->publicPath . '/public/img/remove.png" onclick="var r = confirm(\'Emin misiniz?\'); if (r == true) return true; else return false;">';
+                            <a href="?clear=' . $id . '"  class="sil"> 
+			   						 <img title="Remove" alt="Remove" src="/public/img/remove.png" onclick="var r = confirm(\'Emin misiniz?\'); if (r == true) return true; else return false;">';
 
                 $products .= '<tr id="full-cart' . $id . '" class="sepetsatiri">
                 <td class="image">
 				<a href="' . $item['URL'] . '">
 
-                <img src="' . $resim . '" style="height:35px;" alt="' . $item['UrunAdi'] . '" title="' . $item['UrunAdi'] . '"></a>
+                <img src="' . $resim . '" style="height:35px;" alt="' . $item['productID'] . '" title="' . $item['productID'] . '"></a>
 
                 </td>
                 <td class="name">
-                <a href="' . $item['URL'] . '">' . $item['UrunAdi'] . '</a>
+                <a href="' . $item['URL'] . '">' . $item['productID'] . '</a>
                 </td>
 
                 <td class="quantity">
             			' . $deger . '
 			    </td>
             			             <td class="unit">
-            			' . ($item['StokBirimi']) . '
+            			' . ($item['stockUnit']) . '
 			    </td>
 			    <td class="price">' . ($item['price']) . ' TL</td>
-                <td id="total_' . $item['UrunID'] . '" class="total">' . ($item['totalPrice']) . ' TL</td>
+                <td id="total_' . $item['productID'] . '" class="total">' . ($item['totalPrice']) . ' TL</td>
               </tr>';
             }
             $products .= ' </tbody>
@@ -227,7 +191,7 @@ class HtmlHelper extends Cart
         $products = "<table>
 		<tbody>
 		";
-        if (sizeof($this->session) > 0) {
+        if (is_array($this->session) && sizeof($this->session) > 0) {
 
             $tot = $this->cartCount();
             $products .= '<tr>
@@ -262,14 +226,14 @@ class HtmlHelper extends Cart
     public function getJSON()
     {
         if (!$_SESSION[$this->productWareHouseControl]) {
-            if (sizeof($this->session) > 0) {
+            if (is_array($this->session) && sizeof($this->session) <= 0) {
                 $tot = $this->cartCount();
                 $json = array(
                     "DURUM" => 'ok',
                     // "addLastCartStockPiece" => $this->addLastCartStockPiece(),/*burasının amacı sepetim sayfasında degisken_max_adetine deger vermesi içindir */
                     "SepetSatirlari" => $this->viewCartTableMiniJSON(),
-                    "addLastCartPriceInfo" => $this->addLastCartPriceInfo(),
-                    "addLastCartPiece" => $this->addLastCartPiece(),
+                    "addLastCartPriceInfo" => $this->getLastCartPriceInfo(),
+                    "addLastCartPiece" => $this->getLastCartPiece(),
                     "SepetToplamKodu" => $this->viewCartTablePrice(),
                     "SepetUst" => $tot["totalPiece"] . ' Adet <strong class="price2">' . $this->subTotal . ' TL</strong>',
                     "SepettotalPrice" => $this->updatesubTotal() . ' TL',
@@ -303,5 +267,28 @@ class HtmlHelper extends Cart
             return json_encode($json);
         }
     }
+
+
+    /**
+     * DEPRECATED ------
+     * sepetim sayfasından gelen isteğe göre ,sepetten ürünü çıkartır
+     *
+     * @param int $id
+     *
+     */
+    public function AjaxRemoveCart($id, $adet = 1)
+    {
+        $this->lastAdded = $id;
+        if (count($this->session) > 0) {
+            if (array_key_exists($id, $this->session)) {
+                $this->session[$id]['totalEach'] -= $adet;
+                /* $this->session[$id]['totalEach'] -= 1; */
+                $this->session[$id]['totalPrice'] = ($this->session[$id]['price'] * $this->session[$id]['totalEach']);
+            }
+        }
+        return $this->setSessionCart();
+    }
+
+
 
 }

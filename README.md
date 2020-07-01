@@ -16,7 +16,7 @@ Alışveriş sepetindeki ürünlerin silinmesi, miktarının değiştirlmesi vey
 ## Sepet fonsiyonunu tanıtmak
 ```php
   define('SESSION_PREFIX', 'stnccart_');
-define('BISLEM_RESIM_BULUNAMADİ','');
+define('BISLEM_productImage_BULUNAMADİ','');
 session_start();
         // eğer use olarak kullanılacaksa
         // use use \stnc\shoppingCart\Cart;
@@ -34,9 +34,9 @@ http://cms.dev/sepet?action=ekle
    $cart = new \stnc\shoppingCart\Cart('stnc', PUBLIC_PATH);
             $data = array(
                 'UrunID' => 02,
-                'UrunAdi' => "çikolata  ",
-                'Resim' => "biskuvi.jpg",
-                'ResimURL' => "",
+                'productID' => "çikolata  ",
+                'productImage' => "biskuvi.jpg",
+                'productImageURL' => "",
                 'URL' => "biskuvi.jpg",
                 'Fiyat' => 40.99,
                 "totalEach" => 1, //stok adeti
@@ -50,9 +50,9 @@ http://cms.dev/sepet?action=ekle
             
             $data = array(
                 'UrunID' => 05,
-                'UrunAdi' => "kraker  ",
-                'Resim' => "biskuvi.jpg",
-                'ResimURL' => "biskuvi.jpg",
+                'productID' => "kraker  ",
+                'productImage' => "biskuvi.jpg",
+                'productImageURL' => "biskuvi.jpg",
                 'URL' => "biskuvi.jpg",
                 'Fiyat' => 5,
                 "totalEach" => 1,
@@ -69,9 +69,9 @@ http://cms.dev/sepet?action=sil
    $cart = new \stnc\shoppingCart\Cart('stnc', PUBLIC_PATH);
                        $data = array(
                 'UrunID' => 02,
-                'UrunAdi' => "çikolata  ",
-                'Resim' => "biskuvi.jpg",
-                'ResimURL' => "biskuvi.jpg",
+                'productID' => "çikolata  ",
+                'productImage' => "biskuvi.jpg",
+                'productImageURL' => "biskuvi.jpg",
                 'URL' => "biskuvi.jpg",
                 'price' => 40.99,
                 "totalEach" => 1,
@@ -92,9 +92,9 @@ http://cms.dev/sepet?action=ekle
    $cart = new \stnc\shoppingCart\Cart ('stnc', PUBLIC_PATH);
             $data = array(
                 'UrunID' => 02,
-                'UrunAdi' => "çikolata  ",
-                'Resim' => "biskuvi.jpg",
-                'ResimURL' => "biskuvi.jpg",
+                'productID' => "çikolata  ",
+                'productImage' => "biskuvi.jpg",
+                'productImageURL' => "biskuvi.jpg",
                 'URL' => "biskuvi.jpg",
                 'Fiyat' => 40.99,
                 "totalEach" => 1,
@@ -114,9 +114,9 @@ http://cms.dev/sepet?action=ekle
    $cart = new \stnc\shoppingCart\Cart('stnc', PUBLIC_PATH);
             $data = array(
                 'UrunID' => 02,
-                'UrunAdi' => "çikolata  ",
-                'Resim' => "biskuvi.jpg",
-                'ResimURL' => "biskuvi.jpg",
+                'productID' => "çikolata  ",
+                'productImage' => "biskuvi.jpg",
+                'productImageURL' => "biskuvi.jpg",
                 'URL' => "biskuvi.jpg",
                 'Fiyat' => 40.99,
                 "totalEach" => 1,

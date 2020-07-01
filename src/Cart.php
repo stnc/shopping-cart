@@ -7,10 +7,11 @@
 namespace Stnc\ShoppingCart;
 
 /**
- * Price hesaplamaları ve o türden özellikdeki bilgileri barındıracak
- * Copyright (c) 2015
+ * Alışveriş uygulamalrı için sepet  
+ * Copyright (c) 2015 - 2020
  *
- * Author(s): Selman TUNÇ www.selmantunc.com <selmantunc@gmail.com>
+ * Author(s): Selman TUNÇ www.selmantunc.com.tr 
+ * <selmantunc@gmail.com>
  *
  * Licensed under the MIT License
  * Redistributions of files must retain the above copyright notice.
@@ -25,6 +26,8 @@ class Cart
 {
 
 
+    //depoda stok varmı yok 
+    // TODO: gerekli mi ???
     public $productWareHouseControl;
     /**
      * cookie aktif olacak mı
@@ -69,12 +72,7 @@ class Cart
      */
     public $subTotal = null;
 
-    /**
-     * resim klasoruleri için varsayaılan yolu set eder
-     *
-     * @var string $publicPath
-     */
-    private $publicPath = null;
+
 
     /**
      * aynı üründen var ise onu gruplama yapıp yapmayacağı seçeneği
@@ -85,23 +83,20 @@ class Cart
      * kraker 1 adet 
      * kraker 1 adet mi gosterilsin onun içindir 
      *
-     * @var boolean $eachAdd
+     * @var boolean $groups
      */
-    private $eachAdd = false;
+    public $groups = true;
 
     /**
      * kurucu ayarlar
      * session name set edeilir
      *
      * @param string $value
-     * @param string $publicPath
      *            puplic klasoru
      */
-    public function __construct($sessionName_, $publicPath)
+    public function __construct($sessionName_ )
     {
-
         $this->sessionName = $sessionName_;
-        $this->publicPath = $publicPath;
         $this->getSessionCart();
     }
 
@@ -121,9 +116,36 @@ class Cart
                 // Burada daha yeni şeyler ekleyebilir
                 // son eklenen ürünler içindir
                 $this->session[$this->lastAdded][$name] = $value;
-                $this->setSessionCart();
+                $this->addSessionCart();
                 break;
         }
+    }
+
+
+    public function addToCart($id, $data, $dataType = 'noajax')
+    {
+        $this->lastAdded = $id;
+        if ($this->groups) {
+            // urun zaten eklenmişse ve tekrar gelirse totalEachini artır
+            if (array_key_exists($id, $this->session)) {
+                $total = $data["totalEach"];
+                // $this->session[$id]['totalEach'] = $this->v[$id]['totalEach'] + $this->session[$id]['totalEach'];
+                $this->session[$id]['totalEach'] += $total;
+                $this->session[$id]['totalPrice'] = ($this->session[$id]['price'] * $this->session[$id]['totalEach']);
+            } else { 
+                /* yeni urunse ekle direk ekle */
+                $this->session[$id] = $data;
+                //Bir dizinin başlangıcına bir veya daha fazla eleman ekler fakat dizi keyleri onemli o yuzden bekleyecek
+                // array_unshift( $this->session[$id],$data);
+            }
+        } else {
+           
+            $rndID=$id+(rand(1,500)+1);
+            $this->session[ $rndID] = $data;
+        }
+//    print_r($this->session);
+   //  $_SESSION[$this->sessionName][$id]['totalEach'] += $_SESSION[$this->sessionName][$id]['totalEach'] + $total; echo $_SESSION[$this->sessionName][$id]['totalEach'];
+        return $this->addSessionCart();
     }
 
     /**
@@ -143,90 +165,9 @@ class Cart
                 // unset ($this->session[$id]['price']);
             }
         }
-        return $this->setSessionCart();
+        return $this->addSessionCart();
     }
 
-    /**
-     * sepetim sayfasından gelen isteğe göre ,sepetten ürünü çıkartır
-     *
-     * @param int $id
-     *
-     */
-    public function AjaxRemoveCart($id, $adet = 1)
-    {
-        $this->lastAdded = $id;
-        if (count($this->session) > 0) {
-            if (array_key_exists($id, $this->session)) {
-                $this->session[$id]['totalEach'] -= $adet;
-                /* $this->session[$id]['totalEach'] -= 1; */
-                $this->session[$id]['totalPrice'] = ($this->session[$id]['price'] * $this->session[$id]['totalEach']);
-            }
-        }
-        return $this->setSessionCart();
-    }
-
-    public function addToCart($id, $data, $dataType = 'noajax')
-    {
-        
-        //   echo '<pre>';
-        // //   print_r($this->session[$id]);
-        //   print_r($data);
-        //   echo '</pre>';
-         
-        $this->lastAdded = $id;
-        if ($this->eachAdd) {
-            // urun zaten eklenmişse ve tekrar gelirse totalEachini artır
-            if (array_key_exists($id, $this->session)) {
-                $total = $data["totalEach"];
-                // $this->session[$id]['totalEach'] = $this->v[$id]['totalEach'] + $this->session[$id]['totalEach'];
-                $this->session[$id]['totalEach'] += $total;
-                $this->session[$id]['totalPrice'] = ($this->session[$id]['price'] * $this->session[$id]['totalEach']);
-            } else { 
-                /* yeni urunse ekle direk ekle */
-                $this->session[$id] = $data;
-                //Bir dizinin başlangıcına bir veya daha fazla eleman ekler fakat dizi keyleri onemli o yuzden bekleyecek
-                // array_unshift( $this->session[$id],$data);
-            }
-        } else {
-           
-            $rndID=$id+(rand(1,500)+1);
-            $this->session[ $rndID] = $data;
-
-        
-        }
-//    print_r($this->session);
-   //  $_SESSION[$this->sessionName][$id]['totalEach'] += $_SESSION[$this->sessionName][$id]['totalEach'] + $total; echo $_SESSION[$this->sessionName][$id]['totalEach'];
-        return $this->setSessionCart();
-    }
-
-    /**
-     * sepetin Pricelarını hesapla
-     *
-     * @return float
-     */
-    public function updatesubTotal()
-    {
-
-       // print_r($_SESSION[$this->sessionName]);
-        $totalPrice = 0;
-        if (sizeof($this->session) > 0) {
-            foreach ($this->session as $id => $item) {
-
-                //php 7 http://php.net/manual/en/migration71.other-changes.php
-                if (is_numeric($item['totalPrice'])) {
-                    $totalPrice +=  $item['totalPrice'];
-                    //     $totalPrice += $totalPrice + $item['totalPrice']; //bu bug vermiş -----
-                }
-
-                // $totalPrice += $item['totalPrice'] ;//silme
-            
-            }
-            $this->subTotal = $totalPrice;
-            return ($totalPrice);
-        } else {
-            return 0;
-        }
-    }
 
     /**
      * şepeti boşalt
@@ -242,94 +183,7 @@ class Cart
             unset($this->session[$key]);
         }
         $_SESSION[$this->productWareHouseControl] = false;
-        return $this->setSessionCart();
-    }
-
-   
-    /*
-     * son eklenen ürünün fiyat bilgisini verir
-     * @return mixed
-     */
-    private function addLastCartPriceInfo()
-    {
-        if (sizeof($this->session > 0)) {
-            $id = $this->lastAdded;
-            return ($this->session[$id]['totalPrice']) . ' $';
-        } else {
-            return null;
-        }
-    }
-
-    /*
-     * sepete eklenen son urunun sepettki adetini verir
-     * ajax sepete ekle ye gibi minik olan alana bilgi gondermeye yarar
-     * @param int $id eğer id değeri false ise bu cart içindeki getJSON dan tetiklenmesi içindir ,
-     * id farklı değer ise sepet controller içinden tetiklenmesi gerekiyor anlamına gelir
-     * @return mixed
-     */
-    public function addLastCartPiece($id = false)
-    {
-        if ($id != false) {
-            $id = $id;
-        } else {
-            $id = $this->lastAdded;
-        }
-        if (sizeof($this->session > 0)) {
-
-            return $this->session[$id]['totalEach'];
-        } else {
-            return null;
-        }
-    }
-
-    /*
-     * sepete eklenen son urunun stok adetini verir
-     * ajax sepete ekle ye gibi minik olan alana bilgi gondermeye yarar
-     * @return mixed
-     */
-    private function addLastCartStockPiece()
-    {
-        $id = $this->lastAdded;
-        if (sizeof($this->session > 0)) {
-            return $this->session[$id]['amountOfStock'];
-        } else {
-            return null;
-        }
-    }
-
-  
-   
-    /*
-     * sepetteki ler hakkında bilgi verir
-     * @return mixed
-     */
-    public function viewCart()
-    {
-        if (isset($_SESSION[$this->sessionName])) {
-            if (count($this->session) > 0) {
-                echo '<pre>';
-                print_r($this->session);
-                echo '</pre>';
-                print_r($_SESSION[$this->sessionName]);
-            }
-        }
-    }
-
-
-    /*
-     * sepetteki ler hakkında bilgi verir
-     * @return mixed
-     */
-    public function viewCartArray()
-    {
-        if (isset($_SESSION[$this->sessionName])) {
-            if (count($this->session) > 0) {
-             
-                return $this->session;
-
-          
-            }
-        }
+        return $this->addSessionCart();
     }
 
   
@@ -362,6 +216,7 @@ class Cart
         }
     }
 
+    //TODO: ayrıca bunun istenen ürün bilgisi veren bolumlu halide olmalı (cartCount fonk ile ne farkı var bakılacak )
     /*
      *CART INFORMATION 
      * sepetteki ürün hakkında bilgiler verir
@@ -372,12 +227,12 @@ class Cart
      */
     public function cartInfo()
     {
-        if (sizeof($this->session) > 0) {
+        if (is_array($this->session) && sizeof($this->session) > 0) {
             $tot = $this->cartCount();
             $products = array(
                 'totalProduct' => $tot["totalProduct"],
                 'totalPiece' => $tot["totalPiece"],
-                'totalPrice' => $this->tr_number($this->subTotal),
+                'totalPrice' => $this->subTotal,
             );
         } else { // sepet boş ise
             $products = array(
@@ -389,6 +244,57 @@ class Cart
 
         return $products;
     }
+
+   
+    /*
+     * sepetteki ler hakkında bilgi verir
+     * TODO: bunun json metoduda olsun 
+     * @return mixed
+     */
+    public function viewCartArray()
+    {
+        if (isset($_SESSION[$this->sessionName])) {
+            if (count($this->session) > 0) {
+             
+                return $this->session;
+
+          
+            }
+        }
+    }
+
+
+
+    
+    /**
+     * sepetin Pricelarını hesapla
+     *
+     * @return float
+     */
+    public function updatesubTotal()
+    {
+
+       // print_r($_SESSION[$this->sessionName]);
+        $totalPrice = 0;
+        if (is_array($this->session) && sizeof($this->session) > 0) {
+            foreach ($this->session as $id => $item) {
+
+                //php 7 http://php.net/manual/en/migration71.other-changes.php
+                if (is_numeric($item['totalPrice'])) {
+                    $totalPrice +=  $item['totalPrice'];
+                    //     $totalPrice += $totalPrice + $item['totalPrice']; //bu bug vermiş -----
+                }
+
+                // $totalPrice += $item['totalPrice'] ;//silme
+            
+            }
+            $this->subTotal = $totalPrice;
+            return ($totalPrice);
+        } else {
+            return 0;
+        }
+    }
+
 
     /*
      * session objesini verir [ object = session ]
@@ -409,9 +315,76 @@ class Cart
         return true;
     }
 
+    /*
+     * son eklenen ürünün fiyat bilgisini verir
+     * @return mixed
+     */
+    protected function getLastCartPriceInfo()
+    {
+        if (sizeof($this->session > 0)) {
+            $id = $this->lastAdded;
+            return ($this->session[$id]['totalPrice']) . ' $';
+        } else {
+            return null;
+        }
+    }
+
+    /*
+     * sepete eklenen son urunun sepettki adetini verir
+     * ajax sepete ekle ye gibi minik olan alana bilgi gondermeye yarar
+     * @param int $id eğer id değeri false ise bu cart içindeki getJSON dan tetiklenmesi içindir ,
+     * id farklı değer ise sepet controller içinden tetiklenmesi gerekiyor anlamına gelir
+     * @return mixed
+     */
+    public function getLastCartPiece($id = false)
+    {
+        if ($id != false) {
+            $id = $id;
+        } else {
+            $id = $this->lastAdded;
+        }
+        if (sizeof($this->session > 0)) {
+
+            return $this->session[$id]['totalEach'];
+        } else {
+            return null;
+        }
+    }
+
+    /*
+     * sepete eklenen son urunun stok adetini verir
+     * ajax sepete ekle ye gibi minik olan alana bilgi gondermeye yarar
+     * @return mixed
+     */
+    private function getLastCartStockPiece()
+    {
+        $id = $this->lastAdded;
+        if (sizeof($this->session > 0)) {
+            return $this->session[$id]['amountOfStock'];
+        } else {
+            return null;
+        }
+    }
+
+  
+   
+    /*
+     * session nname adı nedir
+     * @return string 
+     */
+    public function getSessionName()
+    {
+        if (isset($_SESSION[$this->sessionName])) {
+            if (count($this->session) > 0) {
+                return ($_SESSION[$this->sessionName]);
+            }
+        }
+    }
+
+
     // sessoin lar set edilir [ session = object ]
     // en önemli yer
-    protected function setSessionCart()
+    protected function addSessionCart()
     {
        // print_r($_SESSION);
         $_SESSION[$this->sessionName] = $this->session;
