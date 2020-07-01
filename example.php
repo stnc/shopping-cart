@@ -17,7 +17,7 @@ $cart->groups=false;
 
 
 /* other call
-$cart_other = new  \stnc\cart\Cart('stnc');
+$cart_other = new  \Stnc\ShoppingCart\Cart;
 print_r($cart_other);
 */
 

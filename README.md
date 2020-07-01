@@ -15,15 +15,12 @@ Alışveriş sepetindeki ürünlerin silinmesi, miktarının değiştirlmesi vey
 
 ## Sepet fonsiyonunu tanıtmak
 ```php
-  define('SESSION_PREFIX', 'stnccart_');
-define('BISLEM_productImage_BULUNAMADİ','');
-session_start();
+
         // eğer use olarak kullanılacaksa
-        // use use \stnc\shoppingCart\Cart;
-        // $sepet = new cart($cart_name, PUBLIC_PATH);
-    use \stnc\shoppingCart\Cart;
-    $cart_name = 'stnc'; // sepetin session değerine bir değer atadık
-    $cart = new cart($cart_name, 's');
+        // use use \Stnc\ShoppingCart\Cart;
+$cart_name = 'stnc'; // sepetin session değerine bir değer atadık
+$cart = new Cart($cart_name);
+$cart->groups=false;
 ```
 ## ADDTOCART fonksiyonu (Sepete ürün ekleme)
 
@@ -31,157 +28,72 @@ Sepete ürün ekleme için kullanılır aynı id'li üründen tekrar eklenirse k
 
 http://cms.dev/sepet?action=ekle
 ```php
-   $cart = new \stnc\shoppingCart\Cart('stnc', PUBLIC_PATH);
-            $data = array(
-                'UrunID' => 02,
-                'productID' => "çikolata  ",
-                'productImage' => "biskuvi.jpg",
-                'productImageURL' => "",
-                'URL' => "biskuvi.jpg",
-                'Fiyat' => 40.99,
-                "totalEach" => 1, //stok adeti
-                "totalPrice" => ""
-            );
-            // sepete eklenenen her ürün için benzersiz bir id verilmesi gerekir
-            // 34 burada bunu temsil ediyor
-            // bu mesela şu olabilir urunler tablosundaki urun_id yada sku değeri olabilir
-            // bunlar tekil değerlerdir
-            $cart->addToCart("100", $data);
-            
-            $data = array(
-                'UrunID' => 05,
-                'productID' => "kraker  ",
-                'productImage' => "biskuvi.jpg",
-                'productImageURL' => "biskuvi.jpg",
-                'URL' => "biskuvi.jpg",
-                'Fiyat' => 5,
-                "totalEach" => 1,
-                "totalPrice" => ""
-            );
-            $cart->addToCart("125", $data);
+$data = array(
+		'productID' => 100,
+		'productName' => "ice cream",
+		'productImageURL' => "https://example.org/icecream.jpg",
+		'URL' => "https://example.org/product/100",
+		'price' => 40.99,
+		"totalEach" => 1,
+		'stockUnit'=>'unit',
+		"totalPrice" => 40.99
+);
+$cart->addToCart("100", $data);
+	  echo '<pre>';
+	  print_r($cart->viewCartArray());
+	  echo '</pre>';
 ```
 ## removeCart fonksiyonu (Sepetden ürün silmek )
 
 Sepetden ürün silmek içindir 
 
-http://cms.dev/sepet?action=sil
-```php
-   $cart = new \stnc\shoppingCart\Cart('stnc', PUBLIC_PATH);
-                       $data = array(
-                'UrunID' => 02,
-                'productID' => "çikolata  ",
-                'productImage' => "biskuvi.jpg",
-                'productImageURL' => "biskuvi.jpg",
-                'URL' => "biskuvi.jpg",
-                'price' => 40.99,
-                "totalEach" => 1,
-                "totalPrice" => ""
-            );
 
-            $cart->addToCart("100", $data);
-            $cart->viewCart();
-     		$cart->removeCart(100);
-            $cart->viewCart();
+```php
+   $cart->removeCart(100);
+	  echo '<pre>';
+	  print_r($cart->viewCartArray());
+	  echo '</pre>';
 ```
 ## viewCart fonksiyonu
 
-Sepeti array olarak verir
 
-http://cms.dev/sepet?action=ekle
-```php
-   $cart = new \stnc\shoppingCart\Cart ('stnc', PUBLIC_PATH);
-            $data = array(
-                'UrunID' => 02,
-                'productID' => "çikolata  ",
-                'productImage' => "biskuvi.jpg",
-                'productImageURL' => "biskuvi.jpg",
-                'URL' => "biskuvi.jpg",
-                'Fiyat' => 40.99,
-                "totalEach" => 1,
-                "totalPrice" => ""
-            );
-       $cart->addToCart("125", $data);
-            
-           //sepet blgisini ver
-           $cart-> viewCart();
-```
-## GetJson fonksiyonu
-
-Sepeti json olarak geri dondürür ama json değerlerinde otomatik olarak ürünler tablo içinde oluşturulmuş olarak dönerler
-
-http://cms.dev/sepet?action=ekle
-```php
-   $cart = new \stnc\shoppingCart\Cart('stnc', PUBLIC_PATH);
-            $data = array(
-                'UrunID' => 02,
-                'productID' => "çikolata  ",
-                'productImage' => "biskuvi.jpg",
-                'productImageURL' => "biskuvi.jpg",
-                'URL' => "biskuvi.jpg",
-                'Fiyat' => 40.99,
-                "totalEach" => 1,
-                "totalPrice" => ""
-            );
-       	$cart->addToCart("125", $data);
-        $cart->viewCart();
-        echo $cart->getJSON();
-```		
 ## emptyCart fonksiyonu
 
 sepeti boşaltmak için kullanılır
-
-http://cms.dev/sepet?action=bosalt
 ```php
-   $cart = new \stnc\shoppingCart\Cart('stnc', PUBLIC_PATH);
    $cart->emptyCart();
-  $cart->viewCart();
+ 	  echo '<pre>';
+	  print_r($cart->viewCartArray());
+	  echo '</pre>';
 ```
-## viewCartTablePrice fonksiyonu
 
-sepetteki ler hakkında ürün adet ve tutar olarak bilgi verir, mini sepet dosyası içindir
+## viewCartArray fonksiyonu
 
-http://cms.dev/sepet?action=mini_sepet_fiyat
+sepeti array olarak gösterir 
 ```php
-   $cart = new \stnc\shoppingCart\Cart('stnc', PUBLIC_PATH);
-   $cart->viewCartTablePrice();
-
-//sonuc 
-/*
-Toplam Ürün:	2 Ürün
-Toplam Adet:	4 Adet
-Toplam Tutar:	91,98 TL
-*/
+	  echo '<pre>';
+	  print_r($cart->viewCartArray());
+	  echo '</pre>';
 ```
-##viewCartTableFull fonksiyonu
 
-sepetteki ler hakkında ürün adet ve tutar olarak full liste bilgi verir.sepetim sayfası bunu kullanır
+	// 
+	 print_r( $cart->cartCount());
 
-http://cms.dev/sepet?action=table
-```php
-   $cart = new \stnc\shoppingCart\Cart('stnc', PUBLIC_PATH);
-   
-     /*  sepet sayfası na basılıcak yerdir
-      * sepetteki ler hakkında table olarak ayrıntılı bilgi verir
-      */
-  
- echo $cart->viewCartTableFull();
-```
 ## cartCount fonksiyonu
 
-sepetteki ürün toplamı hakkında bilgi verir sepette kaç Adet ürün ve kaç ürün var
-
-http://cms.dev/sepet?action=sepet_tutari
+ sepetteki ürün toplamı hakkında bilgi verir
 ```php
-$cart = new \stnc\shoppingCart\Cart('stnc', PUBLIC_PATH);
-print_r( $cart->cartCount());
-//çıktısı             
-/*
-Array
-(
-    [toplam_urun] => 2
-    [toplam_adet] => 4
-)
-*/
+	  print_r($cart->cartCount());
+```
+
+## cartInfo fonksiyonu
+
+sepetteki ürün hakkında bilgiler verir 
+```php
+	  print_r($cart->cartInfo());
+```
+
+
 ```
 demo page thx 
 https://startbootstrap.com/templates/heroic-features/
