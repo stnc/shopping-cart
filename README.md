@@ -6,7 +6,7 @@ Alışveriş sepeti sistemi Bu sınıf kullanıcılar siteyi ziyaret ederken ür
 Basit esnek ve kolay uygulabilir gelişmiş bir sınıfdır.<br>
 Alışveriş sepetindeki ürünlerin silinmesi, miktarının değiştirlmesi veya yeni ürün eklenmesi gibi işlemlere olanak sağlar.
 
-# Yükleme /Install  
+# Yükleme / Install  
 
 composer require stnc/shopping-cart
 
@@ -34,7 +34,7 @@ $cart->groups=false;
 
 Sepete ürün ekleme için kullanılır aynı id'li üründen tekrar eklenirse kontrol eder ve sadece ürünün fiyatını ve adetini günceller
 
-http://cms.dev/sepet?action=ekle
+
 ```php
 $data = array(
 		'productID' => 100,
