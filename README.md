@@ -1,12 +1,9 @@
 
-# Alışveriş sepeti sistemi
+# PHP SHOPPING CART
 
-Alışveriş sepeti sistemi Bu sınıf kullanıcılar siteyi ziyaret ederken ürünlerin eklenebileceği, <br>
-"session"da saklanan bir alışveriş sepeti oluşturmamız için bize yardım eder.<br>
-Basit esnek ve kolay uygulabilir gelişmiş bir sınıfdır.<br>
-Alışveriş sepetindeki ürünlerin silinmesi, miktarının değiştirlmesi veya yeni ürün eklenmesi gibi işlemlere olanak sağlar.
+php simple shopping cart class and html ajax  example 
 
-# Yükleme / Install  
+#  Install  
 
 composer require stnc/shopping-cart
 
@@ -14,26 +11,28 @@ composer require stnc/shopping-cart
 
 <strong> SCREENSHOT </strong>
 
+<img  src="https://raw.githubusercontent.com/stnc/shopping-cart/master/screen2.png">
+
 <img  src="https://raw.githubusercontent.com/stnc/shopping-cart/master/screen.png">
+
 
 <hr>
 
 
 
 
-## Sepet fonsiyonunu tanıtmak
+## init
 ```php
 
-        // eğer use olarak kullanılacaksa
+       
         // use use \Stnc\ShoppingCart\Cart;
 $cart_name = 'stnc'; // sepetin session değerine bir değer atadık
 $cart = new Cart($cart_name);
 $cart->groups=false;
 ```
-## ADDTOCART fonksiyonu (Sepete ürün ekleme)
+## ADDTOCART function
 
-Sepete ürün ekleme için kullanılır aynı id'li üründen tekrar eklenirse kontrol eder ve sadece ürünün fiyatını ve adetini günceller
-
+add to cart
 
 ```php
 $data = array(
@@ -51,9 +50,9 @@ $cart->addToCart("100", $data);
 	  print_r($cart->viewCartArray());
 	  echo '</pre>';
 ```
-## removeCart fonksiyonu (Sepetden ürün silmek )
+## removeCart function 
 
-Sepetden ürün silmek içindir 
+cart to remove 
 
 
 ```php
@@ -62,12 +61,12 @@ Sepetden ürün silmek içindir
 	  print_r($cart->viewCartArray());
 	  echo '</pre>';
 ```
-## viewCart fonksiyonu
+## viewCart function
 
 
-## emptyCart fonksiyonu
+## emptyCart function
 
-sepeti boşaltmak için kullanılır
+cart empty
 ```php
    $cart->emptyCart();
  	  echo '<pre>';
@@ -75,9 +74,9 @@ sepeti boşaltmak için kullanılır
 	  echo '</pre>';
 ```
 
-## viewCartArray fonksiyonu
+## viewCartArray function
 
-sepeti array olarak gösterir 
+cart to result array 
 ```php
 	  echo '<pre>';
 	  print_r($cart->viewCartArray());
@@ -89,14 +88,15 @@ sepeti array olarak gösterir
 
 ## cartCount fonksiyonu
 
- sepetteki ürün toplamı hakkında bilgi verir
+gives information about the total of items in the basket
+
 ```php
 	  print_r($cart->cartCount());
 ```
 
 ## cartInfo fonksiyonu
 
-sepetteki ürün hakkında bilgiler verir 
+Cart information 
 ```php
 	  print_r($cart->cartInfo());
 ```
