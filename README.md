@@ -4,9 +4,9 @@
 php simple shopping cart class and html ajax  example 
 
 #  Install  
-
+```php
 composer require stnc/shopping-cart
-
+```
 <hr>
 
 <strong> SCREENSHOT </strong>
