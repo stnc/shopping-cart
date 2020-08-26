@@ -28,11 +28,11 @@ class Cart
 
 
     /**
-     * cookie aktif olacak mı
+     * cookie set 
      *
-     * @var $cookieEnabled
+     * @var $setCookie
      */
-    public $cookieEnabled = true;
+    public $setCookie = true;
 
     /**
      * cookie nin tarihi
@@ -257,7 +257,7 @@ class Cart
      * TODO: bunun json metoduda olsun 
      * @return mixed
      */
-    public function viewCartArray()
+    public function getArray()
     {
         if (isset($_SESSION[$this->sessionName])) {
             if (count($this->session) > 0) {
@@ -278,16 +278,16 @@ class Cart
             
                 $json = array(
                      "status" => 'ok',
-                     "CartItems" => $this->viewCartArray(),
-                     "CartTotalPrice" => $this->subTotal ,
-                     "CartItemEach" =>  $this->cartCount(),
+                     "cartItems" => $this->getArray(),
+                     "cartTotalPrice" => $this->subTotal ,
+                     "cartItemPiece" =>  $this->cartCount(),
                 );
             } else {
                 $json = array(
                      "status" => 'empty',
-                     "CartItems" => $this->viewCartArray(),
-                     "CartTotalPrice" => $this->subTotal ,
-                     "CartItemEach" =>  $this->cartCount(),
+                     "cartItems" => $this->getArray(),
+                     "cartTotalPrice" => $this->subTotal ,
+                     "cartItemPiece" =>  $this->cartCount(),
                 );
             }
             return json_encode($json);
@@ -424,7 +424,7 @@ class Cart
    // print_r(    $_SESSION[$this->sessionName]);
         $this->updatesubTotal(); // Priceları güncelle
 
-        //   if ($this->cookieEnabled) {
+        //   if ($this->setCookie) {
         //   $arrays = base64_encode ( serialize ( $_SESSION [$this->sessionName] ) );
         //   setcookie ( $this->sessionName, $arrays, time () + $this->cookieDate, '/' );
         //   }

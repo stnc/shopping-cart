@@ -14,7 +14,7 @@
    
    $cart= new Cart($cart_name);
    $cart->groups=true;
-   $cartItems=$cart->viewCartArray();
+   $cartItems=$cart->getArray();
    /* other call
    $cart_other = new  \stnc\cart\Cart('stnc', 'ds');
    print_r($cart_other);
@@ -72,7 +72,7 @@
           
    
 
-             $items = $cart->viewCartArray();
+             $items = $cart->getArray();
              //echo $cart->getJSON();
              echo sepetEvents($items, $cart->subTotal);
              die();
@@ -145,7 +145,7 @@
                     $cart->addToCart(4, $data);
                     }
      
-             $items = $cart->viewCartArray();
+             $items = $cart->getArray();
              //echo $cart->getJSON();
              echo sepetEvents($items, $cart->subTotal);
      
@@ -153,7 +153,7 @@
          }
      }
 
-//    $items = $this->viewCartArray();
+//    $items = $this->getArray();
 //bu kendisinden gelen metodla basacak html 
 function sepetEvents($items, $subTotal)
 {

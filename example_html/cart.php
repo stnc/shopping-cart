@@ -15,7 +15,7 @@ $cart_name = 'stnc'; // sepetin session değerine bir değer atadık
 $cart= new Cart($cart_name);
 $cart->groups=true;
 
-$cartItems=$cart->viewCartArray();
+$cartItems=$cart->getArray();
 
 if (isset($_GET['clear']) && $_GET['clear']==1  ){
    $cart->removeCart($_GET['clear']);

@@ -47,7 +47,7 @@ $data = array(
 );
 $cart->addToCart("100", $data);
 	  echo '<pre>';
-	  print_r($cart->viewCartArray());
+	  print_r($cart->getArray());
 	  echo '</pre>';
 ```
 ## removeCart function 
@@ -58,7 +58,7 @@ cart to remove
 ```php
    $cart->removeCart(100);
 	  echo '<pre>';
-	  print_r($cart->viewCartArray());
+	  print_r($cart->getArray());
 	  echo '</pre>';
 ```
 
@@ -81,16 +81,16 @@ cart empty
 ```php
    $cart->emptyCart();
  	  echo '<pre>';
-	  print_r($cart->viewCartArray());
+	  print_r($cart->getArray());
 	  echo '</pre>';
 ```
 
-## viewCartArray function
+## getArray function
 
 cart to result array 
 ```php
 	  echo '<pre>';
-	  print_r($cart->viewCartArray());
+	  print_r($cart->getArray());
 	  echo '</pre>';
 ```
 
