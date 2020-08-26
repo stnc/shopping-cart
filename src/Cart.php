@@ -9,18 +9,15 @@ namespace Stnc\ShoppingCart;
  *
  * Licensed under the MIT License
  * Redistributions of files must retain the above copyright notice.
- * @version 2.1.1
+ * @version 2.1.2
  * @author Selman TUNÇ <selmantunc@gmail.com>
  * @copyright Copyright (c) 2015
- * @link http://github.com/stnc
+ * @link https://github.com/stnc/shopping-cart
  * @license http://www.opensource.org/licenses/mit-license.php The MIT License
  */
 
 class Cart
 {
-
-
-
     /**
      * cookie set 
      *
@@ -128,6 +125,7 @@ class Cart
                 $this->session[$id]['totalPrice'] = ($this->session[$id]['price'] * $this->session[$id]['totalEach']);
             } else { 
                 /* yeni urunse ekle direk ekle */
+                $data['jsonID']= intval($id);
                 $this->session[$id] = $data;
                 //Bir dizinin başlangıcına bir veya daha fazla eleman ekler fakat dizi keyleri onemli o yuzden bekleyecek
                 // array_unshift( $this->session[$id],$data);
@@ -135,7 +133,8 @@ class Cart
         } else {
            
             $rndID=$id+(rand(1,500)+1);
-            $this->session[ $rndID] = $data;
+            $data['jsonID']= intval($rndID);
+            $this->session[$rndID] = $data;
         }
 //    print_r($this->session);
    //  $_SESSION[$this->sessionName][$id]['totalEach'] += $_SESSION[$this->sessionName][$id]['totalEach'] + $total; echo $_SESSION[$this->sessionName][$id]['totalEach'];
@@ -272,14 +271,14 @@ class Cart
             
                 $json = array(
                      "status" => 'ok',
-                     "cartItems" => $this->getArray(),
+                     "cartItems" =>array_values($this->getArray()) ,
                      "cartTotalPrice" => $this->subTotal ,
                      "cartItemPiece" =>  $this->cartCount(),
                 );
             } else {
                 $json = array(
                      "status" => 'empty',
-                     "cartItems" => $this->getArray(),
+                     "cartItems" =>array_values($this->getArray()) ,
                      "cartTotalPrice" => $this->subTotal ,
                      "cartItemPiece" =>  $this->cartCount(),
                 );
