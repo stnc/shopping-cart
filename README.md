@@ -61,6 +61,17 @@ cart to remove
 	  print_r($cart->viewCartArray());
 	  echo '</pre>';
 ```
+
+## getJson function 
+
+cart json info 
+
+
+```php
+   $cart->getJson();
+```
+
+
 ## viewCart function
 
 
