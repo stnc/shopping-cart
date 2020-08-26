@@ -3,7 +3,7 @@
     "description": "php shopping cart class",
     "keywords": ["php", "cart", "session"],
     "license": "MIT",
-    "version": "2.0.0",
+    "version": "2.1.0",
         "require": {
         "php": ">=5.4.0"
     },
