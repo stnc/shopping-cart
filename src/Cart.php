@@ -1,13 +1,7 @@
 <?php
-
-/**
- * @author selman.tunc
- *
- */
 namespace Stnc\ShoppingCart;
-
 /**
- * Alışveriş uygulamalrı için sepet  
+ * Shopping Cart 
  * Copyright (c) 2015 - 2020
  *
  * Author(s): Selman TUNÇ www.selmantunc.com.tr 
@@ -15,7 +9,7 @@ namespace Stnc\ShoppingCart;
  *
  * Licensed under the MIT License
  * Redistributions of files must retain the above copyright notice.
- *
+ * @version 2.1.1
  * @author Selman TUNÇ <selmantunc@gmail.com>
  * @copyright Copyright (c) 2015
  * @link http://github.com/stnc
