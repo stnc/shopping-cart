@@ -9,7 +9,7 @@ namespace Stnc\ShoppingCart;
  *
  * Licensed under the MIT License
  * Redistributions of files must retain the above copyright notice.
- * @version 2.1.2
+ * @version 2.1.4
  * @author Selman TUNÇ <selmantunc@gmail.com>
  * @copyright Copyright (c) 2015
  * @link https://github.com/stnc/shopping-cart
