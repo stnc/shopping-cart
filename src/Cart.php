@@ -9,7 +9,7 @@ namespace Stnc\ShoppingCart;
  *
  * Licensed under the MIT License
  * Redistributions of files must retain the above copyright notice.
- * @version 2.1.3
+ * @version 2.1.2
  * @author Selman TUNÇ <selmantunc@gmail.com>
  * @copyright Copyright (c) 2015
  * @link https://github.com/stnc/shopping-cart
@@ -88,7 +88,7 @@ class Cart
     public function __construct($sessionName_ )
     {
         $this->sessionName = $sessionName_;
-        $this->getSessionCart();
+        $this->initSessionCart();
     }
 
     // destruct - unset cart var
@@ -187,7 +187,7 @@ class Cart
      * sepette kaç Adet ürün ve kaç ürün var
      * @return array
      */
-    public function cartCount()
+    protected function cartCount()
     {
         // print_r(array_keys($this->sess));
         if (count($this->session) > 0) {
@@ -203,25 +203,34 @@ class Cart
             return array(
                 "totalProduct" => $totalProduct,
                 "totalPiece" => $totalPiece,
+
             );
         } else {
             return array(
-                "totalPiece" => 0,
+                'totalProduct' => 0,
+                'totalPiece' => 0,
+
             );
         }
     }
 
-    //TODO: ayrıca bunun istenen ürün bilgisi veren bolumlu halide olmalı (cartCount fonk ile ne farkı var bakılacak )
+     /*
+      get id cart 
+     */
+    public function getIDCart($id)
+    {
+        if (isset($_SESSION[$this->sessionName])) {
+            if (count($this->session) > 0) {
+                return$this->session[$id];
+            }
+        }
+    }
+
+
+
     /*
     * gives information about the product in the basket
-       total product
-       total number
-       total amount 
-     *CART INFORMATION 
-      sepetteki ürün hakkında bilgiler verir
-      toplam urun
-      toplam adet
-      toplam tutar
+     * Alias function 
      * @return array
      */
     public function cartInfo()
@@ -272,15 +281,13 @@ class Cart
                 $json = array(
                      "status" => 'ok',
                      "cartItems" =>array_values($this->getArray()) ,
-                     "cartTotalPrice" => $this->subTotal ,
-                     "cartItemPiece" =>  $this->cartCount(),
+                     "cartInfo" => $this->cartInfo(),
+                     "cartTotalPrice" => $this->subTotal,
+                     "addLastCartPriceInfo" => $this->getLastCartPriceInfo(),
                 );
             } else {
                 $json = array(
                      "status" => 'empty',
-                     "cartItems" =>array_values($this->getArray()) ,
-                     "cartTotalPrice" => $this->subTotal ,
-                     "cartItemPiece" =>  $this->cartCount(),
                 );
             }
             return json_encode($json);
@@ -320,12 +327,12 @@ class Cart
 
 
     /*
-     * get session cart info 
+     * initialization session cart info 
      * session objesini verir [ object = session ]
      * bu kısım construct oluşturularak gelir
      *
      */
-    protected function getSessionCart()
+    private function initSessionCart()
     {
         // $this->session = isset ( $_SESSION [$this->sessionName] ) ? $_SESSION [$this->sessionName] : array (); // org
         if (!isset($_SESSION[$this->sessionName]) && (isset($_COOKIE[$this->sessionName]))) {
@@ -348,7 +355,7 @@ class Cart
     {
         if (sizeof($this->session > 0)) {
             $id = $this->lastAdded;
-            return ($this->session[$id]['totalPrice']) . ' $';
+            return ($this->session[$id]['totalPrice']) ;
         } else {
             return null;
         }
@@ -377,20 +384,6 @@ class Cart
         }
     }
 
-    /*
-     * gives the stock quantity of the last product added to the basket
-     * sepete eklenen son urunun stok adetini verir
-     * @return mixed
-     */
-    private function getLastCartStockPiece()
-    {
-        $id = $this->lastAdded;
-        if (sizeof($this->session > 0)) {
-            return $this->session[$id]['amountOfStock'];
-        } else {
-            return null;
-        }
-    }
 
   
    
@@ -400,11 +393,7 @@ class Cart
      */
     public function getSessionName()
     {
-        if (isset($_SESSION[$this->sessionName])) {
-            if (count($this->session) > 0) {
-                return ($_SESSION[$this->sessionName]);
-            }
-        }
+     return  $this->sessionName ; 
     }
 
 

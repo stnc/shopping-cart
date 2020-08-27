@@ -97,7 +97,7 @@ class HtmlHelper extends Cart
             </thead>
             <tbody class="sepetsatirlari">';
 
-            foreach ($this->session as $id => $item) {
+            foreach ($parent::session as $id => $item) {
                 // $this->session [$id] ['totalPrice'] = ($this->session [$id] ['price'] * $this->session [$id] ['totalEach']);
 
                 // sil diğer kodları <a onclick="sepeti_sil_sepetim(' . $id . ',true );" href="javascript: void(0)" class="sil">
@@ -204,7 +204,7 @@ class HtmlHelper extends Cart
 							</tr>
 							<tr class="price2">
 							<td class="right"><b>Toplam Tutar:</b></td>
-							<td class="right">' . ($this->subTotal) . ' TL</td>
+							<td class="right">' . ($parent::subTotal) . ' TL</td>
 							<tr>';
         } else { // sepet boş ise
             $products .= '
@@ -232,10 +232,10 @@ class HtmlHelper extends Cart
                     "DURUM" => 'ok',
                     // "addLastCartStockPiece" => $this->addLastCartStockPiece(),/*burasının amacı sepetim sayfasında degisken_max_adetine deger vermesi içindir */
                     "SepetSatirlari" => $this->viewCartTableMiniJSON(),
-                    "addLastCartPriceInfo" => $this->getLastCartPriceInfo(),
-                    "addLastCartPiece" => $this->getLastCartPiece(),
+                    "getLastCartPriceInfo" => $parent::getLastCartPriceInfo(),
+                    "getLastCartPiece" => $parent::getLastCartPiece(),
                     "SepetToplamKodu" => $this->viewCartTablePrice(),
-                    "SepetUst" => $tot["totalPiece"] . ' Adet <strong class="price2">' . $this->subTotal . ' TL</strong>',
+                    "SepetUst" => $tot["totalPiece"] . ' Adet <strong class="price2">' . $parent::subTotal . ' TL</strong>',
                     "SepettotalPrice" => $this->updatesubTotal() . ' TL',
                 );
                 return json_encode($json);
@@ -243,8 +243,8 @@ class HtmlHelper extends Cart
                 $json = array(
                     "DURUM" => 'bos',
                     "SepetSatirlari" => null,
-                    "addLastCartPriceInfo" => null,
-                    "addLastCartPiece" => null,
+                    "getLastCartPriceInfo" => null,
+                    "getLastCartPiece" => null,
                     "SepetToplamKodu" => $this->viewCartTablePrice(),
                     "SepetUst" => "",
                     'SepetLimit' => true,
@@ -257,36 +257,18 @@ class HtmlHelper extends Cart
             $json = array(
                 "DURUM" => 'stok_asimi',
                 "SepetSatirlari" => $this->viewCartTableMiniJSON(),
-                "addLastCartPiece" => $this->addLastCartPiece(),
-                "addLastCartPriceInfo" => $this->addLastCartPriceInfo(),
+                "getLastCartPiece" => $parent::getLastCartPiece(),
+                "getLastCartPriceInfo" => $parent::getLastCartPriceInfo(),
                 "SepetToplamKodu" => $this->viewCartTablePrice(),
                 'SepetLimit' => true,
-                "SepetUst" => $tot["totalPiece"] . ' Adet <strong class="price2">' . $this->subTotal . ' TL</strong>',
-                "SepettotalPrice" => $this->subTotal . ' TL',
+                "SepetUst" => $tot["totalPiece"] . ' Adet <strong class="price2">' . $parent::subTotal . ' TL</strong>',
+                "SepettotalPrice" => $parent::subTotal . ' TL',
             );
             return json_encode($json);
         }
     }
 
 
-    /**
-     * DEPRECATED ------
-     * sepetim sayfasından gelen isteğe göre ,sepetten ürünü çıkartır
-     *
-     * @param int $id
-     *
-     */
-    public function AjaxRemoveCart($id, $adet = 1)
-    {
-        $this->lastAdded = $id;
-        if (count($this->session) > 0) {
-            if (array_key_exists($id, $this->session)) {
-                $this->session[$id]['totalEach'] -= $adet;
-                /* $this->session[$id]['totalEach'] -= 1; */
-                $this->session[$id]['totalPrice'] = ($this->session[$id]['price'] * $this->session[$id]['totalEach']);
-            }
-        }
-        return $this->setSessionCart();
     }
 
 
